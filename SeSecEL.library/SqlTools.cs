@@ -1,0 +1,252 @@
+﻿using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Text;
+
+namespace SeSecEL.library
+{
+    public class SqlTools : Constantes
+    {
+        public string MSGError = string.Empty;
+        public const int TimeOut = 1200;
+        public string FormatDate() => ("yyyy-MM-dd");
+        public long ExecCommand(string pagina, string UserName, string funcion, StringBuilder strSQL)  // Comando a ejecutar en la base de datos
+        {
+            SqlConnection cnComando = OpenConnection(pagina, UserName);
+            long Rows = 0;
+            MSGError = string.Empty;
+
+            if (cnComando != null)
+            {
+                try
+                {
+                    SqlTransaction trComando;                  // Variable para la transación
+                    SqlCommand cmComando = new SqlCommand(strSQL.ToString(), cnComando);
+                    trComando = cnComando.BeginTransaction();  // Inicia con el Bloqueo
+
+                    cmComando.CommandTimeout = TimeOut;   // Cambioel Time Out por defualt
+                    cmComando.Transaction = trComando;
+                    cmComando.CommandType = CommandType.Text;
+
+                    Rows = cmComando.ExecuteNonQuery();
+                    trComando.Commit();
+                    trComando.Dispose();
+                    cmComando.Dispose();
+                    cmComando = null;
+                }
+                catch (Exception ex)
+                {
+                    Rows = 0;
+                    MSGError = "SQL_Tools.execCommand:" + ex.Message + " " + strSQL.ToString();
+                    WriteToFile(ex.Message);
+
+                }
+                finally
+                {
+                    cnComando.Close();
+                }
+            }
+            return Math.Abs(Rows);
+        } // End ExecCommand 
+
+        private string GetConnection() => ConfigurationManager.AppSettings["StringConection"];
+        public SqlConnection OpenConnection(string Pagina, string UserName)
+        {
+            SqlConnection cnSQL = new SqlConnection { ConnectionString = GetConnection() };
+            MSGError = string.Empty;
+            try
+            {
+                cnSQL.Open();
+            }
+            catch (Exception ex)
+            {
+                WriteToFile( ex.Message);
+                MSGError = "SQL_Tools.OpenConnection:" + ex.Message;
+                cnSQL = null;
+            }
+            return cnSQL;
+        }
+        public void WriteToFile(string Message)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ServiceLog_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
+            if (!File.Exists(filepath))
+            {
+                // Create a file to write to.   
+                using (StreamWriter sw = File.CreateText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+        }
+
+        public SqlConnection TestConnection(string pagina, string UserName)
+        {
+            SqlConnection cnSQL = null;
+            cnSQL = OpenConnection(pagina, UserName);
+            return cnSQL;
+        }
+
+        public SqlDataReader OpenDataReader(string pagina, string UserName, string funcion, StringBuilder strSQL)
+        {
+            SqlConnection cnSQL = null;
+            SqlCommand cmSQL = null;
+            cnSQL = OpenConnection(pagina, UserName);
+            SqlDataReader drSQL = null;
+            MSGError = string.Empty;
+
+            if (cnSQL != null)
+            {
+                try
+                {
+                    cmSQL = new SqlCommand { CommandText = strSQL.ToString(), Connection = cnSQL, CommandTimeout = TimeOut };
+                    drSQL = cmSQL.ExecuteReader();
+                }
+                catch (Exception ex)
+                {
+                    MSGError = "SQL_Tools.OpenDataReader:" + ex.Message + " " + strSQL.ToString();
+                    WriteToFile(ex.Message);
+                }
+            }
+            return drSQL;
+        }
+        public DataTable FillDataTable(string pagina, string UserName, string funcion, StringBuilder strSQL)
+        {
+            using (DataTable tbl = new DataTable("consulta"))
+            {
+                MSGError = string.Empty;
+
+                try
+                {
+                    SqlConnection cnDataSet = OpenConnection(pagina, UserName);
+                    if (cnDataSet != null)
+                    {
+                        using (SqlDataAdapter daDataSet = new SqlDataAdapter(strSQL.ToString(), cnDataSet))
+                        {
+                            daDataSet.Fill(tbl);
+                        }
+                        cnDataSet.Close();
+                        cnDataSet = null;
+                    }
+                    else
+                    {
+                        tbl.Dispose();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    WriteToFile(ex.Message);
+                    MSGError = "SQL_Tools.FillDataSet  " + pagina + " " + funcion + ": " + ex.Message + strSQL;
+                    return null;
+                }
+                return tbl;
+            }
+
+        }
+        // *****************************************************************************
+        //   FUNCIONES PARA LA CONSTRUCCION DE QUERYs
+        // *****************************************************************************
+        //  Funcion para insertar un campo en la secuncia de consulta 
+        // -----------------------------------------------------------------------------
+        public string CI(string valor)
+           => valor.Trim().Length != 0
+                  ? "'" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
+                  : valor.Trim().Replace("'", "''")) + "', "
+                  : "NULL, "; 
+        public string CI(string valor, Boolean numero)
+            => valor.Trim().Length == 0
+                    ? "NULL, " : (numero ? valor.Trim() + ","
+                    : "'" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
+                    : valor.Trim().Replace("'", "''")) + "',"); 
+        public string CI(string valor, Boolean numero, Boolean coma)
+            => (valor.Trim().Length == 0 ? "NULL"
+                    : numero ? valor.Trim()
+                    : "'" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
+                    : valor.Trim().Replace("'", "''")) + "'") + (coma ? ", " : ""); // End CI
+
+        // ----------------------------------------------------------------------
+        //  Función construir un query de modificación
+        // ----------------------------------------------------------------------
+        public string MC(string campo, string valor)
+            => valor.Trim().Length == 0 ? campo + " = NULL,"
+                : campo + " = '" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
+                                    : valor.Trim().Replace("'", "''")) + "',"; // End Function MC
+
+        public string MC(string campo, string valor, Boolean numerico)
+            => valor.Trim().Length == 0 ? campo + " = NULL," :
+                    numerico ? campo + " = " + valor + "," :
+                           campo + " = '" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
+                                   : valor.Trim().Replace("'", "''")) + "',";  // End Function MC
+
+        public string MC(string campo, string valor, Boolean numerico, Boolean coma)
+            => (valor.Trim().Length == 0 ? campo + " = NULL " :
+                    numerico ? campo + " = " + valor + " " :
+                           campo + " = '" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''") : valor.Trim().Replace("'", "''")) + "' ") +
+                           (coma ? ", " : ""); // End Function MC
+
+
+        private bool GetUpperCase
+        {
+            get
+            {
+                bool.TryParse(ConfigurationManager.AppSettings["UpperCase"], out bool bValor);
+                return bValor;
+            }
+        }
+        public string GetID(string forma, string UserName, string strQuery)
+        {
+            SqlConnection cnClave = OpenConnection(forma, UserName);
+            string strValor = "";
+            MSGError = string.Empty;
+
+            if (cnClave != null)
+            {
+                SqlDataReader drClave;
+                try
+                {
+                    SqlCommand cmClave = new SqlCommand { Connection = cnClave, CommandText = strQuery, CommandTimeout = TimeOut };
+                    drClave = cmClave.ExecuteReader();
+                    if (drClave.Read())
+                    {
+                        if (drClave[0].GetType().FullName == "System.DateTime")
+                        {
+                            if (drClave[0].ToString().Length != 0)
+                            {
+                                strValor = Convert.ToDateTime(drClave[0].ToString()).ToString(FormatDate());
+                            }
+                        }
+                        else
+                        {
+                            strValor = drClave[0].ToString().Trim();
+                        }
+                    }
+                    drClave.Close();
+                    cmClave.Dispose();
+                    cmClave = null;
+                    drClave = null;
+                }
+                catch (Exception ex)
+                {
+                    strValor = "";
+                    MSGError = "SQL_Tools.GetClave:" + ex.Message + " " + strQuery;
+                    WriteToFile(ex.Message + " " + strQuery);
+                }
+                cnClave.Close();
+            }
+            return strValor;
+        }
+    }
+}
