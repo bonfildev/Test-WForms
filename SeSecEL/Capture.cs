@@ -35,6 +35,7 @@ namespace SeSecEL
         private SaveFileDialog saveAvi;
         private SaveFileDialog saveFileDialog1;
         private Stopwatch stopWatch = null;
+        private string vFile;
         //-----------------Audio 
         private WaveEncoder encoder;
         private float[] current;
@@ -42,6 +43,7 @@ namespace SeSecEL
         private MemoryStream stream;
         private Signal aSignal;
         private string aFile;
+        private TimeSpan duration;
         ///-----------------------
         //Deteccion de movimiento
         //----------------- 
@@ -221,7 +223,8 @@ namespace SeSecEL
 
         private void timerMD_Tick(object sender, EventArgs e)
         {
-            txtMotionDetector.Text = LevelDetection.ToString("00.00000000000000000000");
+        txtMotionDetector.Text = LevelDetection.ToString("00.00000000000000000000");
+            lbLength.Text = String.Format("Length: {0:00.00} sec.", duration.Seconds);
         }
 
         private void Recording()
@@ -299,33 +302,44 @@ namespace SeSecEL
                 // open video source
                 OpenVideoSource(FinalVideo);
 
-                if (chkMotionDetector.Checked)
-                {
-                    if (LevelDetection >= CommonCache.Sensitivity)
-                    {
-                        FinalVideo.NewFrame += new NewFrameEventHandler(FinalVideo_NewFrame);
-                        source.NewFrame += audioSource_NewFrame;
-                        source.AudioSourceError += source_AudioSourceError;
-                    }
-                }
-                else
-                {
+                //if (chkMotionDetector.Checked)
+                //{
+                //    if (LevelDetection >= CommonCache.Sensitivity)
+                //    {
+                //        FinalVideo.NewFrame += new NewFrameEventHandler(FinalVideo_NewFrame);
+                //        source.NewFrame += audioSource_NewFrame;
+                //        source.AudioSourceError += source_AudioSourceError;
+                //    }
+                //}
+                //else
+                //{
                     FinalVideo.NewFrame += new NewFrameEventHandler(FinalVideo_NewFrame);
                     source.NewFrame += audioSource_NewFrame;
                     source.AudioSourceError += source_AudioSourceError;
-                }
-
-
+                //}
                 // Create buffer for wavechart control
                 current = new float[source.DesiredFrameSize];
-
                 // Create stream to store file
                 stream = new MemoryStream();
                 encoder = new WaveEncoder(stream);
-
                 source.Start();
-
                 FinalVideo.Start();
+
+                Startrecording();
+
+            }
+        }
+
+        private void Startrecording()
+        {
+            if (video != null)
+            {
+                vFile = System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss") + "video.mp4";
+                FileWriter.Open(GetPath() + vFile, 640, 480);
+                FileWriter.WriteVideoFrame(video);
+                //FileWriter.WriteAudioFrame(aSignal.RawData);
+                bValRec = true;
+                
             }
         }
 
@@ -348,15 +362,15 @@ namespace SeSecEL
                 brush.Dispose();
                 g.Dispose();
                 ///
-                if (chkMotionDetector.Checked)
-                {
-                    if (LevelDetection >= CommonCache.Sensitivity)
-                    {
-                        FileWriter.WriteVideoFrame(video);
-                    }
-                }
-                else
-                    FileWriter.WriteVideoFrame(video);
+                //if (chkMotionDetector.Checked)
+                //{
+                //    if (LevelDetection >= CommonCache.Sensitivity)
+                //    {
+                //        FileWriter.WriteVideoFrame(video);
+                //    }
+                //}
+                //else
+                FileWriter.WriteVideoFrame(video);
                 //Stopwatch sw = Stopwatch.StartNew();
                 //// Process frame to detect objects
                 //Rectangle[] objects = detector.ProcessFrame(video);
@@ -405,6 +419,9 @@ namespace SeSecEL
                 // Read current frame...
                 aSignal = eventArgs.Signal;
                 FileWriter.WriteAudioFrame(aSignal.RawData);
+
+                // Update counters
+                duration += eventArgs.Signal.Duration;
             }
             else
             {
@@ -452,15 +469,11 @@ namespace SeSecEL
             CloseCurrentVideoSource();
             bValRec = false;
             lblRecCam1.Visible = false;
-
-
-            saveFileDialog1 = new SaveFileDialog();
-            saveAvi.Filter = "MP4 files (*.mp4)|*.mp4|Avi Files (*.avi)|*.avi";
             aFile = System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss") + "Audio.wav";
             var fileStream = File.Create(GetPath() + aFile);
             stream.WriteTo(fileStream);
             fileStream.Close();
-            mergefile(aFile , "Camara1AudioTest.mp4");
+            mergefile(aFile , vFile);
         }
 
         private void buttonRecSave_Click(object sender, EventArgs e)

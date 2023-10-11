@@ -164,6 +164,12 @@
     <Compile Include="Capture.Designer.cs">
       <DependentUpon>Capture.cs</DependentUpon>
     </Compile>
+    <Compile Include="CaptureDevice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CaptureDevice.Designer.cs">
+      <DependentUpon>CaptureDevice.cs</DependentUpon>
+    </Compile>
     <Compile Include="RecordAudio.cs">
       <SubType>Form</SubType>
     </Compile>

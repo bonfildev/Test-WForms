@@ -44,7 +44,6 @@ namespace SeSecEL
             this.txtMotionDetector = new System.Windows.Forms.TextBox();
             this.chkMotionDetector = new System.Windows.Forms.CheckBox();
             this.buttonOpenFile = new System.Windows.Forms.Button();
-            this.buttonRecSave = new System.Windows.Forms.Button();
             this.buttonRecStop = new System.Windows.Forms.Button();
             this.buttonRecStart = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -55,6 +54,7 @@ namespace SeSecEL
             this.panelContainer = new System.Windows.Forms.Panel();
             this.pictureBox1 = new Accord.Controls.PictureBox();
             this.videoSourcePlayer1 = new Accord.Controls.VideoSourcePlayer();
+            this.lbLength = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -97,7 +97,6 @@ namespace SeSecEL
             // 
             // timerMD
             // 
-            this.timerMD.Interval = 500;
             this.timerMD.Tick += new System.EventHandler(this.timerMD_Tick);
             // 
             // panel1
@@ -124,6 +123,7 @@ namespace SeSecEL
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.White;
+            this.tabPage1.Controls.Add(this.lbLength);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
@@ -138,7 +138,6 @@ namespace SeSecEL
             this.groupBox2.Controls.Add(this.txtMotionDetector);
             this.groupBox2.Controls.Add(this.chkMotionDetector);
             this.groupBox2.Controls.Add(this.buttonOpenFile);
-            this.groupBox2.Controls.Add(this.buttonRecSave);
             this.groupBox2.Controls.Add(this.buttonRecStop);
             this.groupBox2.Controls.Add(this.buttonRecStart);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -180,23 +179,13 @@ namespace SeSecEL
             // 
             // buttonOpenFile
             // 
-            this.buttonOpenFile.Location = new System.Drawing.Point(218, 68);
+            this.buttonOpenFile.Location = new System.Drawing.Point(126, 27);
             this.buttonOpenFile.Name = "buttonOpenFile";
             this.buttonOpenFile.Size = new System.Drawing.Size(84, 35);
             this.buttonOpenFile.TabIndex = 8;
             this.buttonOpenFile.Text = "Open File";
             this.buttonOpenFile.UseVisualStyleBackColor = true;
             this.buttonOpenFile.Click += new System.EventHandler(this.buttonOpenFile_Click);
-            // 
-            // buttonRecSave
-            // 
-            this.buttonRecSave.Location = new System.Drawing.Point(128, 68);
-            this.buttonRecSave.Name = "buttonRecSave";
-            this.buttonRecSave.Size = new System.Drawing.Size(84, 35);
-            this.buttonRecSave.TabIndex = 7;
-            this.buttonRecSave.Text = "Record";
-            this.buttonRecSave.UseVisualStyleBackColor = true;
-            this.buttonRecSave.Click += new System.EventHandler(this.buttonRecSave_Click);
             // 
             // buttonRecStop
             // 
@@ -311,6 +300,17 @@ namespace SeSecEL
             this.videoSourcePlayer1.VideoSource = null;
             this.videoSourcePlayer1.NewFrame += new Accord.Controls.VideoSourcePlayer.NewFrameHandler(this.videoSourcePlayer1_NewFrame);
             // 
+            // lbLength
+            // 
+            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbLength.Location = new System.Drawing.Point(104, 274);
+            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbLength.Name = "lbLength";
+            this.lbLength.Size = new System.Drawing.Size(108, 62);
+            this.lbLength.TabIndex = 22;
+            this.lbLength.Text = "Length: 00.00 sec.";
+            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Capture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -358,7 +358,6 @@ namespace SeSecEL
         private System.Windows.Forms.TextBox txtMotionDetector;
         private System.Windows.Forms.CheckBox chkMotionDetector;
         private System.Windows.Forms.Button buttonOpenFile;
-        private System.Windows.Forms.Button buttonRecSave;
         private System.Windows.Forms.Button buttonRecStop;
         private System.Windows.Forms.Button buttonRecStart;
         private System.Windows.Forms.TabPage tabPage2;
@@ -369,5 +368,6 @@ namespace SeSecEL
         private Accord.Controls.Wavechart chart;
         private Accord.Controls.VideoSourcePlayer videoSourcePlayer1;
         private Accord.Controls.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lbLength;
     }
 }
