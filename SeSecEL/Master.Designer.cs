@@ -34,13 +34,14 @@ namespace SeSecEL
             this.usuariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.movimientosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.capturaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recorAudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.opcionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.coloresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.parametrosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblUserName = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblEmail = new System.Windows.Forms.ToolStripStatusLabel();
-            this.recorAudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.captureDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -78,7 +79,8 @@ namespace SeSecEL
             // 
             this.movimientosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.capturaToolStripMenuItem,
-            this.recorAudioToolStripMenuItem});
+            this.recorAudioToolStripMenuItem,
+            this.captureDeviceToolStripMenuItem});
             this.movimientosToolStripMenuItem.Name = "movimientosToolStripMenuItem";
             this.movimientosToolStripMenuItem.Size = new System.Drawing.Size(155, 34);
             this.movimientosToolStripMenuItem.Text = "Movimientos";
@@ -89,6 +91,13 @@ namespace SeSecEL
             this.capturaToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
             this.capturaToolStripMenuItem.Text = "Captura";
             this.capturaToolStripMenuItem.Click += new System.EventHandler(this.capturaToolStripMenuItem_Click_1);
+            // 
+            // recorAudioToolStripMenuItem
+            // 
+            this.recorAudioToolStripMenuItem.Name = "recorAudioToolStripMenuItem";
+            this.recorAudioToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
+            this.recorAudioToolStripMenuItem.Text = "Record Audio";
+            this.recorAudioToolStripMenuItem.Click += new System.EventHandler(this.recorAudioToolStripMenuItem_Click);
             // 
             // opcionesToolStripMenuItem
             // 
@@ -137,12 +146,12 @@ namespace SeSecEL
             this.lblEmail.Size = new System.Drawing.Size(54, 25);
             this.lblEmail.Text = "email";
             // 
-            // recorAudioToolStripMenuItem
+            // captureDeviceToolStripMenuItem
             // 
-            this.recorAudioToolStripMenuItem.Name = "recorAudioToolStripMenuItem";
-            this.recorAudioToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
-            this.recorAudioToolStripMenuItem.Text = "RecorAudio";
-            this.recorAudioToolStripMenuItem.Click += new System.EventHandler(this.recorAudioToolStripMenuItem_Click);
+            this.captureDeviceToolStripMenuItem.Name = "captureDeviceToolStripMenuItem";
+            this.captureDeviceToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
+            this.captureDeviceToolStripMenuItem.Text = "Capture Device";
+            this.captureDeviceToolStripMenuItem.Click += new System.EventHandler(this.captureDeviceToolStripMenuItem_Click);
             // 
             // Master
             // 
@@ -182,6 +191,7 @@ namespace SeSecEL
         private System.Windows.Forms.ToolStripMenuItem coloresToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem parametrosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recorAudioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem captureDeviceToolStripMenuItem;
     }
 }
 

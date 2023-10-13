@@ -149,12 +149,6 @@ namespace SeSecEL
                 source.SignalToStop();
                 source.WaitForStop();
             }
-            //if (output != null)
-            //{
-            //    // If we were playing
-            //    output.SignalToStop();
-            //    output.WaitForStop();
-            //}
 
             //updateButtons();
 
@@ -279,9 +273,9 @@ namespace SeSecEL
         //Captura una camara
         private void buttonRecStart_Click(object sender, EventArgs e)
         {
+            CloseCurrentVideoSource();
             InitCampos();
             captureDevice = new VideoCaptureDeviceForm();
-            CloseCurrentVideoSource();
 
             // Create capture device
             source = new AudioCaptureDevice()
@@ -302,21 +296,9 @@ namespace SeSecEL
                 // open video source
                 OpenVideoSource(FinalVideo);
 
-                //if (chkMotionDetector.Checked)
-                //{
-                //    if (LevelDetection >= CommonCache.Sensitivity)
-                //    {
-                //        FinalVideo.NewFrame += new NewFrameEventHandler(FinalVideo_NewFrame);
-                //        source.NewFrame += audioSource_NewFrame;
-                //        source.AudioSourceError += source_AudioSourceError;
-                //    }
-                //}
-                //else
-                //{
-                    FinalVideo.NewFrame += new NewFrameEventHandler(FinalVideo_NewFrame);
-                    source.NewFrame += audioSource_NewFrame;
-                    source.AudioSourceError += source_AudioSourceError;
-                //}
+                FinalVideo.NewFrame += new NewFrameEventHandler(FinalVideo_NewFrame);
+                source.NewFrame += audioSource_NewFrame;
+                source.AudioSourceError += source_AudioSourceError;
                 // Create buffer for wavechart control
                 current = new float[source.DesiredFrameSize];
                 // Create stream to store file
@@ -361,44 +343,12 @@ namespace SeSecEL
                 g.DrawString(now.ToString(), new Font("Arial", video.Height / 25), brush, new PointF(5, video.Height - 80));
                 brush.Dispose();
                 g.Dispose();
-                ///
-                //if (chkMotionDetector.Checked)
-                //{
-                //    if (LevelDetection >= CommonCache.Sensitivity)
-                //    {
-                //        FileWriter.WriteVideoFrame(video);
-                //    }
-                //}
-                //else
                 FileWriter.WriteVideoFrame(video);
-                //Stopwatch sw = Stopwatch.StartNew();
-                //// Process frame to detect objects
-                //Rectangle[] objects = detector.ProcessFrame(video);
-                //sw.Stop();
-                //if (objects.Length > 0)
-                //{
-                //    RectanglesMarker marker = new RectanglesMarker(objects, Color.Yellow);
-                //    pictureBox1.Image = marker.Apply(video);
-                //}
-
-                //toolStripStatusLabel1.Text = string.Format("Completed detection of {0} objects in {1}.",objects.Length, sw.Elapsed);
-                ////
             }
             else //Stop
             {
                 video = (Bitmap)eventArgs.Frame.Clone();
                 pictureBox1.Image = (Bitmap)eventArgs.Frame.Clone();
-
-                //Stopwatch sw = Stopwatch.StartNew();
-                //// Process frame to detect objects
-                //Rectangle[] objects = detector.ProcessFrame(video);
-                //sw.Stop();
-                //if (objects.Length > 0)
-                //{
-                //    RectanglesMarker marker = new RectanglesMarker(objects, Color.Yellow);
-                //    pictureBox1.Image = marker.Apply(video);
-                //}
-                //pictureBox1.Image = (Bitmap)eventArgs.Frame.Clone();
             }
         }
 

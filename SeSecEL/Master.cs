@@ -34,7 +34,7 @@ namespace SeSecEL
         private void Master_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
-            Environment.Exit(0);
+            //Environment.Exit(0);
         }
 
         private void coloresToolStripMenuItem_Click(object sender, EventArgs e)
@@ -55,6 +55,13 @@ namespace SeSecEL
         private void recorAudioToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form form = new RecordAudio();
+            form.MdiParent = this;
+            form.Show();
+        }
+
+        private void captureDeviceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form form = new CaptureDevice();
             form.MdiParent = this;
             form.Show();
         }

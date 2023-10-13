@@ -39,6 +39,7 @@ namespace SeSecEL
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lbLength = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblRecCam1 = new System.Windows.Forms.Label();
             this.txtMotionDetector = new System.Windows.Forms.TextBox();
@@ -54,7 +55,6 @@ namespace SeSecEL
             this.panelContainer = new System.Windows.Forms.Panel();
             this.pictureBox1 = new Accord.Controls.PictureBox();
             this.videoSourcePlayer1 = new Accord.Controls.VideoSourcePlayer();
-            this.lbLength = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -132,6 +132,17 @@ namespace SeSecEL
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             // 
+            // lbLength
+            // 
+            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbLength.Location = new System.Drawing.Point(104, 274);
+            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbLength.Name = "lbLength";
+            this.lbLength.Size = new System.Drawing.Size(108, 62);
+            this.lbLength.TabIndex = 22;
+            this.lbLength.Text = "Length: 00.00 sec.";
+            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lblRecCam1);
@@ -179,7 +190,7 @@ namespace SeSecEL
             // 
             // buttonOpenFile
             // 
-            this.buttonOpenFile.Location = new System.Drawing.Point(126, 27);
+            this.buttonOpenFile.Location = new System.Drawing.Point(125, 27);
             this.buttonOpenFile.Name = "buttonOpenFile";
             this.buttonOpenFile.Size = new System.Drawing.Size(84, 35);
             this.buttonOpenFile.TabIndex = 8;
@@ -299,17 +310,6 @@ namespace SeSecEL
             this.videoSourcePlayer1.Text = "videoSourcePlayer1";
             this.videoSourcePlayer1.VideoSource = null;
             this.videoSourcePlayer1.NewFrame += new Accord.Controls.VideoSourcePlayer.NewFrameHandler(this.videoSourcePlayer1_NewFrame);
-            // 
-            // lbLength
-            // 
-            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbLength.Location = new System.Drawing.Point(104, 274);
-            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbLength.Name = "lbLength";
-            this.lbLength.Size = new System.Drawing.Size(108, 62);
-            this.lbLength.TabIndex = 22;
-            this.lbLength.Text = "Length: 00.00 sec.";
-            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Capture
             // 
