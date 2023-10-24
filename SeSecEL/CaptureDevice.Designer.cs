@@ -30,26 +30,26 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelContainer = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btnStartRecord = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.recordingTimer = new System.Windows.Forms.Timer(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.lblRecCam1 = new System.Windows.Forms.Label();
-            this.lbLength = new System.Windows.Forms.Label();
-            this.TimerF = new System.Windows.Forms.Timer(this.components);
             this.fpsLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.labelFps = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lbLength = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lblRecCam1 = new System.Windows.Forms.Label();
+            this.btnStartRecord = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.recordingTimer = new System.Windows.Forms.Timer(this.components);
+            this.TimerF = new System.Windows.Forms.Timer(this.components);
             this.panelContainer.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelContainer
@@ -61,6 +61,37 @@
             this.panelContainer.Name = "panelContainer";
             this.panelContainer.Size = new System.Drawing.Size(900, 538);
             this.panelContainer.TabIndex = 5;
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fpsLabel,
+            this.labelFps,
+            this.lblStatus});
+            this.statusStrip.Location = new System.Drawing.Point(0, 506);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStrip.Size = new System.Drawing.Size(900, 32);
+            this.statusStrip.TabIndex = 13;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // fpsLabel
+            // 
+            this.fpsLabel.Name = "fpsLabel";
+            this.fpsLabel.Size = new System.Drawing.Size(0, 25);
+            // 
+            // labelFps
+            // 
+            this.labelFps.Name = "labelFps";
+            this.labelFps.Size = new System.Drawing.Size(17, 25);
+            this.labelFps.Text = " ";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(17, 25);
+            this.lblStatus.Text = " ";
             // 
             // pictureBox1
             // 
@@ -93,6 +124,17 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // lbLength
+            // 
+            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbLength.Location = new System.Drawing.Point(70, 221);
+            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbLength.Name = "lbLength";
+            this.lbLength.Size = new System.Drawing.Size(108, 62);
+            this.lbLength.TabIndex = 23;
+            this.lbLength.Text = "Length: 00.00 sec.";
+            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.lblRecCam1);
@@ -102,6 +144,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(242, 156);
             this.panel2.TabIndex = 0;
+            // 
+            // lblRecCam1
+            // 
+            this.lblRecCam1.AutoSize = true;
+            this.lblRecCam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRecCam1.ForeColor = System.Drawing.Color.Red;
+            this.lblRecCam1.Location = new System.Drawing.Point(162, 21);
+            this.lblRecCam1.Name = "lblRecCam1";
+            this.lblRecCam1.Size = new System.Drawing.Size(75, 25);
+            this.lblRecCam1.TabIndex = 15;
+            this.lblRecCam1.Text = "[• REC]";
             // 
             // btnStartRecord
             // 
@@ -129,63 +182,10 @@
             this.recordingTimer.Interval = 1000;
             this.recordingTimer.Tick += new System.EventHandler(this.recordingTimer_Tick);
             // 
-            // statusStrip
-            // 
-            this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fpsLabel,
-            this.labelFps,
-            this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 506);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
-            this.statusStrip.Size = new System.Drawing.Size(900, 32);
-            this.statusStrip.TabIndex = 13;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // lblRecCam1
-            // 
-            this.lblRecCam1.AutoSize = true;
-            this.lblRecCam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRecCam1.ForeColor = System.Drawing.Color.Red;
-            this.lblRecCam1.Location = new System.Drawing.Point(162, 21);
-            this.lblRecCam1.Name = "lblRecCam1";
-            this.lblRecCam1.Size = new System.Drawing.Size(75, 25);
-            this.lblRecCam1.TabIndex = 15;
-            this.lblRecCam1.Text = "[• REC]";
-            // 
-            // lbLength
-            // 
-            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbLength.Location = new System.Drawing.Point(70, 221);
-            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbLength.Name = "lbLength";
-            this.lbLength.Size = new System.Drawing.Size(108, 62);
-            this.lbLength.TabIndex = 23;
-            this.lbLength.Text = "Length: 00.00 sec.";
-            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // TimerF
             // 
             this.TimerF.Interval = 31;
             this.TimerF.Tick += new System.EventHandler(this.TimerF_Tick);
-            // 
-            // fpsLabel
-            // 
-            this.fpsLabel.Name = "fpsLabel";
-            this.fpsLabel.Size = new System.Drawing.Size(0, 25);
-            // 
-            // labelFps
-            // 
-            this.labelFps.Name = "labelFps";
-            this.labelFps.Size = new System.Drawing.Size(17, 25);
-            this.labelFps.Text = " ";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(17, 25);
-            this.lblStatus.Text = " ";
             // 
             // CaptureDevice
             // 
@@ -199,13 +199,13 @@
             this.Load += new System.EventHandler(this.CaptureDevice_Load);
             this.panelContainer.ResumeLayout(false);
             this.panelContainer.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }

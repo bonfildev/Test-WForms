@@ -22,7 +22,6 @@ namespace SeSecEL
         VideoWriter outputVideo;
         VideoCapture video;     //REPRODUCIR UN VIDEO   
         VideoCapture capture;   //capturar un video
-        Bitmap bitmap;
         Mat frame;
         Bitmap imageAlternate;
         Bitmap image;
@@ -36,7 +35,6 @@ namespace SeSecEL
         bool isMicrophoneJustStarted;
         Recording audioRecorder;
         private string aFile;
-
         private long duration;
 
         private int iRec { get; set; } = 0;
@@ -108,7 +106,8 @@ namespace SeSecEL
                 DisposeCameraResources();
                 StopMicrophone();
                 lblStatus.Text = "Recording ended.";
-                OutputRecordingAsync();
+                //OutputRecordingAsync();
+                mergefile(aFile, vFile);
             }
         }
         private void DisposeCameraResources()
@@ -185,6 +184,7 @@ namespace SeSecEL
         {
             if (capture.IsOpened)
             {
+                TimerF.Interval = (1000/(int)capture.Get(Emgu.CV.CvEnum.CapProp.Fps));
                 try
                 {
                     frame = new Mat();
@@ -254,6 +254,33 @@ namespace SeSecEL
         }
 
 
+        /// <summary>
+        /// Mezcla 2 archivos Audio y video
+        /// y los guarda en un tercer archivo
+        /// </summary>
+        /// <param name="wavefile"></param>
+        /// <param name="videofile"></param>
+        private void mergefile(string wavefile, string videofile)
+        {
+            try
+            {
+                string args = "/c ffmpeg -i \"" + videofile + "\" -i \"" + wavefile + "\" -shortest outPutFile.mp4";
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.CreateNoWindow = false;
+                startInfo.FileName = "cmd.exe";
+                startInfo.WorkingDirectory = @"C:\Users\mxsae\Documents\TestingRecord\";
+                startInfo.Arguments = args;
+                using Process exeProcess = Process.Start(startInfo);
+                exeProcess.WaitForExit();
+                exeProcess.Close();
+            }
+            catch (Exception ex)
+            {
+                lblStatus.Text = "Recording cannot be saved.";
+
+                MessageBox.Show($"Recording cannot be saved because {ex.Message}", "Error on Recording Saving", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private async void OutputRecordingAsync()
         {
