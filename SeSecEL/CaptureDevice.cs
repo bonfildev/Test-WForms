@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Accord.Controls;
 using BasicAudio;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -17,7 +19,10 @@ namespace SeSecEL
 {
     public partial class CaptureDevice : Form
     {
-
+        SqlTools sql = new SqlTools();
+        DateTime timeRec;
+        DateTime timeRecRestart;
+        private TimeSpan diff;
         //Video
         VideoWriter outputVideo;
         VideoCapture video;     //REPRODUCIR UN VIDEO   
@@ -28,7 +33,6 @@ namespace SeSecEL
         bool isUsingImageAlternate = false;
         bool Pause;
         bool isCameraRunning = false;
-        SqlTools sql = new SqlTools();
         private Stopwatch stopWatch = null;
 
         //AUdio
@@ -46,6 +50,7 @@ namespace SeSecEL
         public CaptureDevice()
         {
             InitializeComponent();
+
         }
         private void CaptureDevice_Load(object sender, EventArgs e)
         {
@@ -55,9 +60,7 @@ namespace SeSecEL
         private void StartCamera()
         {
             DisposeCameraResources();
-
             isCameraRunning = true;
-
             capture = new VideoCapture(0);
             capture.Start();
             vFile = "video.mp4";
@@ -77,10 +80,48 @@ namespace SeSecEL
             audioRecorder.StopRecording();
         }
 
+        private void SaveVideoRecorded()
+        {
+            if (isCameraRunning)
+            {
+                isCameraRunning = false;
+                recordingTimer.Stop();
+                recordingTimer.Enabled = false;
+                TimerF.Stop();
+                TimerF.Enabled = false;
+                DisposeCameraResources();
+                StopMicrophone();
+                lblStatus.Text = "Recording ended.";
+                //OutputRecordingAsync();
+                mergefile(aFile, vFile);
+            }
+        }
+        private void RestartRecording()
+        {
+            if (!isCameraRunning)
+            {
+                timeRecRestart = System.DateTime.UtcNow.AddHours(1);
+                lblStatus.Text = "Starting recording...";
+                isCameraRunning = true;
+                // reset stop watch
+                stopWatch = null;
+                recordingTimer.Enabled = true;
+                recordingTimer.Start();
+                TimerF.Enabled = true;
+                TimerF.Start();
+                StartCamera();
+                StartMicrophone();
+                //capture.ImageGrabbed += Capture_ImageGrabbed;
+                capture.Start();
+                lblStatus.Text = "Recording...";
+            }
+        }
+
         private void btnStartRecording_Click(object sender, EventArgs e)
         {
             if (!isCameraRunning)
             {
+                timeRecRestart = System.DateTime.UtcNow.AddHours(1);
                 lblStatus.Text = "Starting recording...";
                 isCameraRunning = true;
                 // reset stop watch
@@ -97,17 +138,7 @@ namespace SeSecEL
             }
             else
             {
-
-                isCameraRunning = false;
-                recordingTimer.Stop();
-                recordingTimer.Enabled = false;
-                TimerF.Stop();
-                TimerF.Enabled = false;
-                DisposeCameraResources();
-                StopMicrophone();
-                lblStatus.Text = "Recording ended.";
-                //OutputRecordingAsync();
-                mergefile(aFile, vFile);
+                SaveVideoRecorded();
             }
         }
         private void DisposeCameraResources()
@@ -132,15 +163,12 @@ namespace SeSecEL
                 outputVideo.Dispose();
             }
         }
-
-
         private void recordingTimer_Tick(object sender, EventArgs e)
         {
             if (capture.IsOpened)
             {
                 // get number of frames since the last timer tick
                 int fmrte = (int)capture.Get(Emgu.CV.CvEnum.CapProp.Fps);
-
                 if (stopWatch == null)
                 {
                     stopWatch = new Stopwatch();
@@ -177,6 +205,14 @@ namespace SeSecEL
                 {
                     iRec = 0;
                 }
+                timeRec = System.DateTime.UtcNow;
+                diff = timeRecRestart -timeRec;
+                if(diff < TimeSpan.Zero)
+                {
+                    SaveVideoRecorded();
+                    RestartRecording();
+                }
+                
             }
         }
 
@@ -247,12 +283,6 @@ namespace SeSecEL
                 }
             }
         }
-        private void Capture_ImageGrabbed(object sender, EventArgs e)
-        {
-           
-
-        }
-
 
         /// <summary>
         /// Mezcla 2 archivos Audio y video
@@ -264,7 +294,8 @@ namespace SeSecEL
         {
             try
             {
-                string args = "/c ffmpeg -i \"" + videofile + "\" -i \"" + wavefile + "\" -shortest outPutFile.mp4";
+                string outputPath = $"output_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.mp4";
+                string args = "/c ffmpeg -i \"" + videofile + "\" -i \"" + wavefile + "\" -shortest "+ outputPath;
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.CreateNoWindow = false;
                 startInfo.FileName = "cmd.exe";
@@ -280,6 +311,28 @@ namespace SeSecEL
 
                 MessageBox.Show($"Recording cannot be saved because {ex.Message}", "Error on Recording Saving", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+            pictureBox1.Dock = DockStyle.None;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+
+            pictureBox1.Dock = DockStyle.Fill;
+        }
+
+        private void CaptureDevice_Resize(object sender, EventArgs e)
+        {
+            pictureBox1.Width = panelContainer.Width / 2;
+            pictureBox1.Height = panelContainer.Height / 2;
+        }
+
+        private void CaptureDevice_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveVideoRecorded();
         }
 
         private async void OutputRecordingAsync()

@@ -33,7 +33,6 @@ namespace SeSecEL
         private Bitmap video;
         public VideoFileWriter FileWriter = new VideoFileWriter(); //video with compression for an ipcammera or Webcam
         private SaveFileDialog saveAvi;
-        private SaveFileDialog saveFileDialog1;
         private Stopwatch stopWatch = null;
         private string vFile;
         //-----------------Audio 

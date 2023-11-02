@@ -37,19 +37,24 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.lbLength = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblRecCam1 = new System.Windows.Forms.Label();
             this.btnStartRecord = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.recordingTimer = new System.Windows.Forms.Timer(this.components);
             this.TimerF = new System.Windows.Forms.Timer(this.components);
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.lbLength = new System.Windows.Forms.Label();
             this.panelContainer.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelContainer
@@ -95,7 +100,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(30, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(449, 278);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -104,6 +109,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -114,7 +120,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.lbLength);
             this.tabPage1.Controls.Add(this.panel2);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
@@ -124,25 +129,15 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // lbLength
-            // 
-            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbLength.Location = new System.Drawing.Point(70, 221);
-            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbLength.Name = "lbLength";
-            this.lbLength.Size = new System.Drawing.Size(108, 62);
-            this.lbLength.TabIndex = 23;
-            this.lbLength.Text = "Length: 00.00 sec.";
-            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.lbLength);
             this.panel2.Controls.Add(this.lblRecCam1);
             this.panel2.Controls.Add(this.btnStartRecord);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(242, 156);
+            this.panel2.Size = new System.Drawing.Size(242, 91);
             this.panel2.TabIndex = 0;
             // 
             // lblRecCam1
@@ -150,7 +145,7 @@
             this.lblRecCam1.AutoSize = true;
             this.lblRecCam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRecCam1.ForeColor = System.Drawing.Color.Red;
-            this.lblRecCam1.Location = new System.Drawing.Point(162, 21);
+            this.lblRecCam1.Location = new System.Drawing.Point(164, 21);
             this.lblRecCam1.Name = "lblRecCam1";
             this.lblRecCam1.Size = new System.Drawing.Size(75, 25);
             this.lblRecCam1.TabIndex = 15;
@@ -187,6 +182,53 @@
             this.TimerF.Interval = 31;
             this.TimerF.Tick += new System.EventHandler(this.TimerF_Tick);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radioButton2);
+            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(242, 113);
+            this.groupBox1.TabIndex = 23;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Camara 1";
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(22, 67);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(104, 24);
+            this.radioButton2.TabIndex = 2;
+            this.radioButton2.Text = "Maximizar";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
+            this.radioButton1.Location = new System.Drawing.Point(22, 37);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(84, 24);
+            this.radioButton1.TabIndex = 1;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Normal";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // lbLength
+            // 
+            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbLength.Location = new System.Drawing.Point(9, 49);
+            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbLength.Name = "lbLength";
+            this.lbLength.Size = new System.Drawing.Size(195, 36);
+            this.lbLength.TabIndex = 24;
+            this.lbLength.Text = "Length: 00.00 sec.";
+            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // CaptureDevice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -196,16 +238,21 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "CaptureDevice";
             this.Text = "CaptureDevice";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CaptureDevice_FormClosing);
             this.Load += new System.EventHandler(this.CaptureDevice_Load);
+            this.Resize += new System.EventHandler(this.CaptureDevice_Resize);
             this.panelContainer.ResumeLayout(false);
             this.panelContainer.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tabPage2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -221,10 +268,13 @@
         private System.Windows.Forms.Timer recordingTimer;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.Label lblRecCam1;
-        private System.Windows.Forms.Label lbLength;
         private System.Windows.Forms.Timer TimerF;
         private System.Windows.Forms.ToolStripStatusLabel fpsLabel;
         private System.Windows.Forms.ToolStripStatusLabel labelFps;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.Label lbLength;
     }
 }
