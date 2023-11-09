@@ -28,9 +28,7 @@ namespace SeSecEL
         VideoCapture video;     //REPRODUCIR UN VIDEO   
         VideoCapture capture;   //capturar un video
         Mat frame;
-        Bitmap imageAlternate;
         Bitmap image;
-        bool isUsingImageAlternate = false;
         bool Pause;
         bool isCameraRunning = false;
         private Stopwatch stopWatch = null;
@@ -50,12 +48,12 @@ namespace SeSecEL
         public CaptureDevice()
         {
             InitializeComponent();
-
         }
         private void CaptureDevice_Load(object sender, EventArgs e)
         {
             panelContainer.BackColor = System.Drawing.Color.FromArgb(CommonCache.BackGroundColorR, CommonCache.BackGroundColorG, CommonCache.BackGroundColorB);
             lblRecCam1.Visible = false;
+            ResizeControls();
         }
         private void StartCamera()
         {
@@ -63,14 +61,14 @@ namespace SeSecEL
             isCameraRunning = true;
             capture = new VideoCapture(0);
             capture.Start();
-            vFile = "video.mp4";
+            vFile = $"video_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.mp4";
             outputVideo = new VideoWriter(GetPath() + vFile, 29, new System.Drawing.Size(640, 480), true);
         }
 
         private void StartMicrophone()
         {
             audioRecorder = new Recording();
-            aFile = "Audio.wav";
+            aFile = $"Audio_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.wav";
             audioRecorder.Filename = GetPath()+ aFile;
             isMicrophoneJustStarted = true;
         }
@@ -93,14 +91,13 @@ namespace SeSecEL
                 StopMicrophone();
                 lblStatus.Text = "Recording ended.";
                 //OutputRecordingAsync();
-                mergefile(aFile, vFile);
             }
         }
         private void RestartRecording()
         {
             if (!isCameraRunning)
             {
-                timeRecRestart = System.DateTime.UtcNow.AddHours(1);
+                timeRecRestart = System.DateTime.UtcNow.AddMinutes(30);
                 lblStatus.Text = "Starting recording...";
                 isCameraRunning = true;
                 // reset stop watch
@@ -121,7 +118,7 @@ namespace SeSecEL
         {
             if (!isCameraRunning)
             {
-                timeRecRestart = System.DateTime.UtcNow.AddHours(1);
+                timeRecRestart = System.DateTime.UtcNow.AddMinutes(30);
                 lblStatus.Text = "Starting recording...";
                 isCameraRunning = true;
                 // reset stop watch
@@ -139,6 +136,7 @@ namespace SeSecEL
             else
             {
                 SaveVideoRecorded();
+                Task.Run(async () => mergefile(aFile, vFile));
             }
         }
         private void DisposeCameraResources()
@@ -210,6 +208,7 @@ namespace SeSecEL
                 if(diff < TimeSpan.Zero)
                 {
                     SaveVideoRecorded();
+                    Task.Run(async () => mergefile(aFile, vFile));
                     RestartRecording();
                 }
                 
@@ -228,18 +227,8 @@ namespace SeSecEL
                     int fmrte = (int)capture.Get(Emgu.CV.CvEnum.CapProp.Fps);
                     if (frame != null)
                     {
-                        if (imageAlternate == null)
-                        {
-                            isUsingImageAlternate = true;
-                            imageAlternate = frame.ToBitmap();
-                        }
-                        else if (image == null)
-                        {
-                            isUsingImageAlternate = false;
-                            image = frame.ToBitmap();
-                        }
-
-                        pictureBox1.Image = isUsingImageAlternate ? imageAlternate : image;
+                        image = frame.ToBitmap();
+                        pictureBox1.Image = image;
                         if (fmrte > 0 && fmrte < 60)
                         {
                             for (int i = 0; i <= 1; i++)
@@ -252,7 +241,7 @@ namespace SeSecEL
                             outputVideo.Write(frame);
                         }
                     }
-                    }
+                }
                 catch (Exception)
                 {
                     pictureBox1.Image = null;
@@ -263,19 +252,7 @@ namespace SeSecEL
                     {
                         frame.Dispose();
                     }
-
-                    if (isUsingImageAlternate && image != null)
-                    {
-                        image.Dispose();
-                        image = null;
-                    }
-                    else if (!isUsingImageAlternate && imageAlternate != null)
-                    {
-                        imageAlternate.Dispose();
-                        imageAlternate = null;
-                    }
                 }
-
                 if (isMicrophoneJustStarted)
                 {
                     audioRecorder.StartRecording();
@@ -290,12 +267,13 @@ namespace SeSecEL
         /// </summary>
         /// <param name="wavefile"></param>
         /// <param name="videofile"></param>
-        private void mergefile(string wavefile, string videofile)
+        private async void mergefile(string wavefile, string videofile)
         {
             try
             {
+                lblStatus.Text = $"Procesando el video.";
                 string outputPath = $"output_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.mp4";
-                string args = "/c ffmpeg -i \"" + videofile + "\" -i \"" + wavefile + "\" -shortest "+ outputPath;
+                string args = "/c ffmpeg -i \"" + videofile + "\" -i \"" + wavefile + "\" -shortest " + outputPath;
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.CreateNoWindow = false;
                 startInfo.FileName = "cmd.exe";
@@ -304,6 +282,9 @@ namespace SeSecEL
                 using Process exeProcess = Process.Start(startInfo);
                 exeProcess.WaitForExit();
                 exeProcess.Close();
+                lblStatus.Text = $"Recording saved to local disk with the file name {outputPath}.";
+                File.Delete(GetPath() + wavefile);
+                File.Delete(GetPath() + videofile);
             }
             catch (Exception ex)
             {
@@ -324,17 +305,27 @@ namespace SeSecEL
             pictureBox1.Dock = DockStyle.Fill;
         }
 
-        private void CaptureDevice_Resize(object sender, EventArgs e)
+        private void ResizeControls()
         {
             pictureBox1.Width = panelContainer.Width / 2;
             pictureBox1.Height = panelContainer.Height / 2;
         }
 
+        private void CaptureDevice_Resize(object sender, EventArgs e)
+        {
+            ResizeControls();
+        }
+
         private void CaptureDevice_FormClosing(object sender, FormClosingEventArgs e)
         {
             SaveVideoRecorded();
+            Task.Run(async () => mergefile(aFile, vFile));
         }
 
+
+        ///////////////////////////////////////////////
+        // Funciones que no utilizo pero pueden servir
+        ///////////////////////////////////////////////
         private async void OutputRecordingAsync()
         {
             string outputPath = $"output_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.mp4";
