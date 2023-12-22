@@ -1,30 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BasicAudio;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using Emgu.Util;
 using FFMpegCore;
 using SeSecEL.library;
 
 namespace SeSecEL
 {
-    public partial class CaptureDevice : Form
+    public partial class CaptureDeviceTest : Form
     {
         SqlTools sql = new SqlTools();
         DateTime timeRec;
         DateTime timeRecRestart;
         private TimeSpan diff;
         //Video
+        IBackgroundSubtractor backgroundSubtractor;
         VideoWriter outputVideo; //Video de salida
         VideoCapture video;     //REPRODUCIR UN VIDEO   
         VideoCapture capture;   //capturar un video
@@ -33,6 +34,9 @@ namespace SeSecEL
         bool Pause;             //Sin Utilizar, Variable para reproducir un video
         bool isCameraRunning = false;   //Variable para ver si la captura esta detenida
         private Stopwatch stopWatch = null;
+        //Video- Deteccion del rostro
+        static readonly CascadeClassifier faceCascadeClassifier = new CascadeClassifier("haarcascade_frontalface_alt_tree.xml");
+        static readonly CascadeClassifier eyesCascadeClassifier = new CascadeClassifier("haarcascade_eye.xml");
         //AUdio
         bool isMicrophoneJustStarted;
         Recording audioRecorder;
@@ -47,7 +51,7 @@ namespace SeSecEL
         private string aFile;
         private string iFile;
 
-        public CaptureDevice()
+        public CaptureDeviceTest()
         {
             InitializeComponent();
         }
@@ -55,8 +59,51 @@ namespace SeSecEL
         {
             panelContainer.BackColor = System.Drawing.Color.FromArgb(CommonCache.BackGroundColorR, CommonCache.BackGroundColorG, CommonCache.BackGroundColorB);
             lblRecCam1.Visible = false;
+            InitCampos();
+        }
+
+        private void InitCampos()
+        {
+            var videoDevices = new VideoCapture();
+            //foreach (var device in videoDevices)
+            //{
+            //    ddlSelectCamera.Items.Add(device.Name);
+            //}
+
+
             ResizeControls();
         }
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            pictureBox1.Dock = DockStyle.None;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+
+            pictureBox1.Dock = DockStyle.Fill;
+        }
+
+        private void ResizeControls()
+        {
+            pictureBox1.Width = panelContainer.Width / 2;
+            pictureBox1.Height = panelContainer.Height / 2;
+        }
+
+        private void CaptureDevice_Resize(object sender, EventArgs e)
+        {
+            ResizeControls();
+        }
+
+        private void CaptureDevice_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveVideoRecorded();
+            if (isCameraRunning)
+            {
+                Task.Run(async () => mergefile(aFile, vFile));
+            }
+        }
+
         private void StartCamera()
         {
             DisposeCameraResources();
@@ -221,7 +268,7 @@ namespace SeSecEL
         {
             if (capture.IsOpened)
             {
-                TimerF.Interval = (1000/(int)capture.Get(Emgu.CV.CvEnum.CapProp.Fps));
+                TimerF.Interval = (1000 / (int)capture.Get(Emgu.CV.CvEnum.CapProp.Fps));
                 try
                 {
                     frame = new Mat();
@@ -230,7 +277,8 @@ namespace SeSecEL
                     if (frame != null)
                     {
                         image = frame.ToBitmap();
-                        pictureBox1.Image = image;
+                        capture.ImageGrabbed += Capture_ImageGrabbed;
+                        //pictureBox1.Image = image;  
                         if (fmrte > 0 && fmrte < 60)
                         {
                             for (int i = 0; i <= 1; i++)
@@ -260,6 +308,52 @@ namespace SeSecEL
                     audioRecorder.StartRecording();
                     duration = audioRecorder.TimeElapsed;
                 }
+            }
+        }
+
+        private void Capture_ImageGrabbed(object sender, EventArgs e)
+        {
+            try
+            {
+                Mat m = new Mat();
+                capture.Retrieve(m);
+                ProcesarImagen(m.ToBitmap());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Procesa la imagen del video para detectar los rostros
+        /// y lo muestra en el picturebox
+        /// </summary>
+        /// <param name="btm"></param>
+        private void ProcesarImagen(Bitmap btm)
+        {
+            try
+            {
+                Image<Bgr, byte> bgrFrame = capture.QueryFrame().ToImage<Bgr, Byte>();
+                Bitmap bitmap = (Bitmap)btm.Clone();
+                Image<Gray, byte> grayframe = bgrFrame.Convert<Gray, byte>();
+                Rectangle[] rectangles = faceCascadeClassifier.DetectMultiScale(grayframe, 1.1, 1);
+                foreach (var rectangle in rectangles)
+                {
+                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    {
+                        using (Pen pen = new Pen(Color.Blue, 4))
+                        {
+                            graphics.DrawRectangle(pen, rectangle);
+                        }
+
+                    }
+                }
+                pictureBox1.Image = bitmap;
+            }
+            catch(Exception ex)
+            {
+
             }
         }
 
@@ -295,35 +389,6 @@ namespace SeSecEL
                 MessageBox.Show($"Recording cannot be saved because {ex.Message}", "Error on Recording Saving", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-
-            pictureBox1.Dock = DockStyle.None;
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-            pictureBox1.Dock = DockStyle.Fill;
-        }
-
-        private void ResizeControls()
-        {
-            pictureBox1.Width = panelContainer.Width / 2;
-            pictureBox1.Height = panelContainer.Height / 2;
-        }
-
-        private void CaptureDevice_Resize(object sender, EventArgs e)
-        {
-            ResizeControls();
-        }
-
-        private void CaptureDevice_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            SaveVideoRecorded();
-            Task.Run(async () => mergefile(aFile, vFile));
-        }
-
 
         ///////////////////////////////////////////////
         // Funciones que no utilizo pero pueden servir
@@ -436,6 +501,49 @@ namespace SeSecEL
             {
                 iFile = $"img_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.jpeg";
                 pictureBox1.Image.Save(GetPath() + iFile,System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+        }
+
+        /// <summary>
+        /// Abre una imagen y detecta los rostros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnOpenImage_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog() { Multiselect = false, Filter = "JPEG|*.jpeg" })
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    Bitmap bitmap = new Bitmap(Image.FromFile(ofd.FileName));
+                    Image<Bgr, byte> bgrFrame = bitmap.ToImage<Bgr, Byte>();
+                    //Bitmap bitmap = (Bitmap)btm.Clone();
+                    Image<Gray, byte> grayframe = bgrFrame.Convert<Gray, byte>();
+                    Rectangle[] rectangles = faceCascadeClassifier.DetectMultiScale(grayframe, 1.1, 1);
+                    foreach (var rectangle in rectangles)
+                    {
+                        using (Graphics graphics = Graphics.FromImage(bitmap))
+                        {
+                            using (Pen pen = new Pen(Color.Red, 1))
+                            {
+                                graphics.DrawRectangle(pen, rectangle);
+                            }
+                        }
+                    }
+                    rectangles = eyesCascadeClassifier.DetectMultiScale(grayframe, 1.1, 1);
+                    foreach (var rectangle in rectangles)
+                    {
+                        using (Graphics graphics = Graphics.FromImage(bitmap))
+                        {
+                            using (Pen pen = new Pen(Color.Red, 1))
+                            {
+                                graphics.DrawRectangle(pen, rectangle);
+                            }
+                        }
+                    }
+
+                    pictureBox1.Image = bitmap;
+                }
             }
         }
     }

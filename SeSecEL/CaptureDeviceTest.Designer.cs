@@ -1,6 +1,6 @@
 ﻿namespace SeSecEL
 {
-    partial class CaptureDevice
+    partial class CaptureDeviceTest
     {
         /// <summary>
         /// Required designer variable.
@@ -34,6 +34,7 @@
             this.fpsLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.labelFps = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
@@ -46,16 +47,17 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.recordingTimer = new System.Windows.Forms.Timer(this.components);
             this.TimerF = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnOpenImage = new System.Windows.Forms.Button();
             this.btnCaptureFrame = new System.Windows.Forms.Button();
+            this.ddlSelectCamera = new System.Windows.Forms.ComboBox();
             this.panelContainer.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panelContainer
@@ -98,6 +100,16 @@
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(17, 25);
             this.lblStatus.Text = " ";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SeSecEL.Properties.Resources.WhatsApp_Image_2023_09_01_at_12_12_25_PM;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(449, 278);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // tabPage2
             // 
@@ -148,7 +160,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.btnCaptureFrame);
             this.tabPage1.Controls.Add(this.panel2);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
@@ -160,19 +171,22 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.ddlSelectCamera);
+            this.panel2.Controls.Add(this.btnOpenImage);
+            this.panel2.Controls.Add(this.btnCaptureFrame);
             this.panel2.Controls.Add(this.lbLength);
             this.panel2.Controls.Add(this.lblRecCam1);
             this.panel2.Controls.Add(this.btnStartRecord);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(242, 91);
+            this.panel2.Size = new System.Drawing.Size(242, 288);
             this.panel2.TabIndex = 0;
             // 
             // lbLength
             // 
             this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbLength.Location = new System.Drawing.Point(9, 49);
+            this.lbLength.Location = new System.Drawing.Point(5, 89);
             this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbLength.Name = "lbLength";
             this.lbLength.Size = new System.Drawing.Size(195, 36);
@@ -185,7 +199,7 @@
             this.lblRecCam1.AutoSize = true;
             this.lblRecCam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRecCam1.ForeColor = System.Drawing.Color.Red;
-            this.lblRecCam1.Location = new System.Drawing.Point(164, 21);
+            this.lblRecCam1.Location = new System.Drawing.Point(160, 61);
             this.lblRecCam1.Name = "lblRecCam1";
             this.lblRecCam1.Size = new System.Drawing.Size(75, 25);
             this.lblRecCam1.TabIndex = 15;
@@ -193,7 +207,7 @@
             // 
             // btnStartRecord
             // 
-            this.btnStartRecord.Location = new System.Drawing.Point(9, 13);
+            this.btnStartRecord.Location = new System.Drawing.Point(5, 53);
             this.btnStartRecord.Name = "btnStartRecord";
             this.btnStartRecord.Size = new System.Drawing.Size(147, 33);
             this.btnStartRecord.TabIndex = 13;
@@ -222,34 +236,40 @@
             this.TimerF.Interval = 31;
             this.TimerF.Tick += new System.EventHandler(this.TimerF_Tick);
             // 
-            // pictureBox1
+            // btnOpenImage
             // 
-            this.pictureBox1.Image = global::SeSecEL.Properties.Resources.WhatsApp_Image_2023_09_01_at_12_12_25_PM;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(449, 278);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
+            this.btnOpenImage.Location = new System.Drawing.Point(1, 175);
+            this.btnOpenImage.Name = "btnOpenImage";
+            this.btnOpenImage.Size = new System.Drawing.Size(138, 41);
+            this.btnOpenImage.TabIndex = 26;
+            this.btnOpenImage.Text = "abrir imagen";
+            this.btnOpenImage.UseVisualStyleBackColor = true;
             // 
             // btnCaptureFrame
             // 
-            this.btnCaptureFrame.Location = new System.Drawing.Point(39, 129);
+            this.btnCaptureFrame.Location = new System.Drawing.Point(5, 128);
             this.btnCaptureFrame.Name = "btnCaptureFrame";
             this.btnCaptureFrame.Size = new System.Drawing.Size(138, 41);
-            this.btnCaptureFrame.TabIndex = 1;
+            this.btnCaptureFrame.TabIndex = 25;
             this.btnCaptureFrame.Text = "Capturar Imagen";
             this.btnCaptureFrame.UseVisualStyleBackColor = true;
-            this.btnCaptureFrame.Click += new System.EventHandler(this.btnCaptureFrame_Click);
             // 
-            // CaptureDevice
+            // ddlSelectCamera
+            // 
+            this.ddlSelectCamera.FormattingEnabled = true;
+            this.ddlSelectCamera.Location = new System.Drawing.Point(5, 19);
+            this.ddlSelectCamera.Name = "ddlSelectCamera";
+            this.ddlSelectCamera.Size = new System.Drawing.Size(230, 28);
+            this.ddlSelectCamera.TabIndex = 27;
+            // 
+            // CaptureDeviceTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1156, 538);
             this.Controls.Add(this.panelContainer);
             this.Controls.Add(this.tabControl1);
-            this.Name = "CaptureDevice";
+            this.Name = "CaptureDeviceTest";
             this.Text = "CaptureDevice";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CaptureDevice_FormClosing);
             this.Load += new System.EventHandler(this.CaptureDevice_Load);
@@ -258,6 +278,7 @@
             this.panelContainer.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -265,7 +286,6 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -289,6 +309,8 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Label lbLength;
+        private System.Windows.Forms.Button btnOpenImage;
         private System.Windows.Forms.Button btnCaptureFrame;
+        private System.Windows.Forms.ComboBox ddlSelectCamera;
     }
 }

@@ -17,9 +17,7 @@ namespace SeSecEL
 
         private void capturaToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            Form form = new Capture();
-            form.MdiParent = this;
-            form.Show();
+
         }
 
         private void usuariosToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -54,14 +52,19 @@ namespace SeSecEL
 
         private void recorAudioToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form form = new RecordAudio();
-            form.MdiParent = this;
-            form.Show();
+
         }
 
         private void captureDeviceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form form = new CaptureDevice();
+            form.MdiParent = this;
+            form.Show();
+        }
+
+        private void cDTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form form = new CaptureDeviceTest();
             form.MdiParent = this;
             form.Show();
         }

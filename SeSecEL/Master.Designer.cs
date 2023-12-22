@@ -33,7 +33,7 @@ namespace SeSecEL
             this.catalogosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usuariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.movimientosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.capturaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.captureDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recorAudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.opcionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.coloresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,7 +41,7 @@ namespace SeSecEL
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblUserName = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblEmail = new System.Windows.Forms.ToolStripStatusLabel();
-            this.captureDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cDTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -78,19 +78,19 @@ namespace SeSecEL
             // movimientosToolStripMenuItem
             // 
             this.movimientosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.capturaToolStripMenuItem,
+            this.captureDeviceToolStripMenuItem,
             this.recorAudioToolStripMenuItem,
-            this.captureDeviceToolStripMenuItem});
+            this.cDTestToolStripMenuItem});
             this.movimientosToolStripMenuItem.Name = "movimientosToolStripMenuItem";
             this.movimientosToolStripMenuItem.Size = new System.Drawing.Size(155, 34);
             this.movimientosToolStripMenuItem.Text = "Movimientos";
             // 
-            // capturaToolStripMenuItem
+            // captureDeviceToolStripMenuItem
             // 
-            this.capturaToolStripMenuItem.Name = "capturaToolStripMenuItem";
-            this.capturaToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
-            this.capturaToolStripMenuItem.Text = "Captura";
-            this.capturaToolStripMenuItem.Click += new System.EventHandler(this.capturaToolStripMenuItem_Click_1);
+            this.captureDeviceToolStripMenuItem.Name = "captureDeviceToolStripMenuItem";
+            this.captureDeviceToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
+            this.captureDeviceToolStripMenuItem.Text = "Capture Device";
+            this.captureDeviceToolStripMenuItem.Click += new System.EventHandler(this.captureDeviceToolStripMenuItem_Click);
             // 
             // recorAudioToolStripMenuItem
             // 
@@ -146,12 +146,12 @@ namespace SeSecEL
             this.lblEmail.Size = new System.Drawing.Size(54, 25);
             this.lblEmail.Text = "email";
             // 
-            // captureDeviceToolStripMenuItem
+            // cDTestToolStripMenuItem
             // 
-            this.captureDeviceToolStripMenuItem.Name = "captureDeviceToolStripMenuItem";
-            this.captureDeviceToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
-            this.captureDeviceToolStripMenuItem.Text = "Capture Device";
-            this.captureDeviceToolStripMenuItem.Click += new System.EventHandler(this.captureDeviceToolStripMenuItem_Click);
+            this.cDTestToolStripMenuItem.Name = "cDTestToolStripMenuItem";
+            this.cDTestToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
+            this.cDTestToolStripMenuItem.Text = "CDTest";
+            this.cDTestToolStripMenuItem.Click += new System.EventHandler(this.cDTestToolStripMenuItem_Click);
             // 
             // Master
             // 
@@ -183,7 +183,6 @@ namespace SeSecEL
         private System.Windows.Forms.ToolStripMenuItem catalogosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem usuariosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem movimientosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem capturaToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         public System.Windows.Forms.ToolStripStatusLabel lblUserName;
         public System.Windows.Forms.ToolStripStatusLabel lblEmail;
@@ -192,6 +191,7 @@ namespace SeSecEL
         private System.Windows.Forms.ToolStripMenuItem parametrosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recorAudioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem captureDeviceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cDTestToolStripMenuItem;
     }
 }
 

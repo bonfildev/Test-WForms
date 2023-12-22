@@ -79,5 +79,15 @@ namespace SeSecEL.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WhatsApp_Image_2023_09_01_at_12_12_25_PM {
+            get {
+                object obj = ResourceManager.GetObject("WhatsApp Image 2023-09-01 at 12.12.25 PM", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
