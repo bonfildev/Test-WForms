@@ -252,7 +252,7 @@ namespace SeSecEL
 
         private void Login_Load(object sender, EventArgs e)
         {
-            txtUsuario.Text = "diego@gmail.com";
+            txtUsuario.Text = "diego.bonfil.paz@gmail.com";
             txtContraseña.Text = "123";
 
         }
