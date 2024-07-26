@@ -35,15 +35,15 @@ namespace SeSecEL
             strSQL.AppendLine("     AND [Parameters].UserID = " + CommonCache.UserID + ")");
             strSQL.Append("INSERT [Parameters] (ParameterID, UserID, Value)");
             strSQL.Append(" VALUES (");
-            strSQL.Append(sql.CI(Param, true));                                // ParameterID
-            strSQL.Append(sql.CI(CommonCache.UserID, true));                        // UserID
-            strSQL.Append(sql.CI(colorRGB, false, false));                          // Value
+            strSQL.Append("'" + Param + "'");                                // ParameterID
+            strSQL.Append("'" + CommonCache.UserID + "'");                        // UserID
+            strSQL.Append("'" + colorRGB + "'");                          // Value
             strSQL.Append(")");
             strSQL.AppendLine("ELSE ");
             strSQL.Append("UPDATE [Parameters] SET ");
-            strSQL.Append("ParameterID = " + sql.CI(Param, true));                         // ParameterID
-            strSQL.Append("UserID = " + sql.CI(CommonCache.UserID, true));                      // UserID
-            strSQL.Append("Value = " +sql.CI(colorRGB, false, false));                          // Value
+            strSQL.Append("ParameterID = '" + Param + "'");                         // ParameterID
+            strSQL.Append("UserID = '" +  CommonCache.UserID + "'");                      // UserID
+            strSQL.Append("Value = '" + colorRGB + "'");                          // Value
             strSQL.AppendLine("     WHERE [Parameters].ParameterID = " + Param);
             strSQL.AppendLine("     AND [Parameters].UserID = " + CommonCache.UserID);
 

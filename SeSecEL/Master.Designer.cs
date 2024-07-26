@@ -41,7 +41,6 @@ namespace SeSecEL
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblUserName = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblEmail = new System.Windows.Forms.ToolStripStatusLabel();
-            this.cDTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -79,8 +78,7 @@ namespace SeSecEL
             // 
             this.movimientosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.captureDeviceToolStripMenuItem,
-            this.recorAudioToolStripMenuItem,
-            this.cDTestToolStripMenuItem});
+            this.recorAudioToolStripMenuItem});
             this.movimientosToolStripMenuItem.Name = "movimientosToolStripMenuItem";
             this.movimientosToolStripMenuItem.Size = new System.Drawing.Size(155, 34);
             this.movimientosToolStripMenuItem.Text = "Movimientos";
@@ -146,13 +144,6 @@ namespace SeSecEL
             this.lblEmail.Size = new System.Drawing.Size(54, 25);
             this.lblEmail.Text = "email";
             // 
-            // cDTestToolStripMenuItem
-            // 
-            this.cDTestToolStripMenuItem.Name = "cDTestToolStripMenuItem";
-            this.cDTestToolStripMenuItem.Size = new System.Drawing.Size(270, 38);
-            this.cDTestToolStripMenuItem.Text = "CDTest";
-            this.cDTestToolStripMenuItem.Click += new System.EventHandler(this.cDTestToolStripMenuItem_Click);
-            // 
             // Master
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -191,7 +182,6 @@ namespace SeSecEL
         private System.Windows.Forms.ToolStripMenuItem parametrosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recorAudioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem captureDeviceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cDTestToolStripMenuItem;
     }
 }
 

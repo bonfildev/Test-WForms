@@ -156,47 +156,6 @@ namespace SeSecEL.library
             }
 
         }
-        // *****************************************************************************
-        //   FUNCIONES PARA LA CONSTRUCCION DE QUERYs
-        // *****************************************************************************
-        //  Funcion para insertar un campo en la secuncia de consulta 
-        // -----------------------------------------------------------------------------
-        public string CI(string valor)
-           => valor.Trim().Length != 0
-                  ? "'" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
-                  : valor.Trim().Replace("'", "''")) + "', "
-                  : "NULL, "; 
-        public string CI(string valor, Boolean numero)
-            => valor.Trim().Length == 0
-                    ? "NULL, " : (numero ? valor.Trim() + ","
-                    : "'" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
-                    : valor.Trim().Replace("'", "''")) + "',"); 
-        public string CI(string valor, Boolean numero, Boolean coma)
-            => (valor.Trim().Length == 0 ? "NULL"
-                    : numero ? valor.Trim()
-                    : "'" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
-                    : valor.Trim().Replace("'", "''")) + "'") + (coma ? ", " : ""); // End CI
-
-        // ----------------------------------------------------------------------
-        //  Función construir un query de modificación
-        // ----------------------------------------------------------------------
-        public string MC(string campo, string valor)
-            => valor.Trim().Length == 0 ? campo + " = NULL,"
-                : campo + " = '" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
-                                    : valor.Trim().Replace("'", "''")) + "',"; // End Function MC
-
-        public string MC(string campo, string valor, Boolean numerico)
-            => valor.Trim().Length == 0 ? campo + " = NULL," :
-                    numerico ? campo + " = " + valor + "," :
-                           campo + " = '" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''")
-                                   : valor.Trim().Replace("'", "''")) + "',";  // End Function MC
-
-        public string MC(string campo, string valor, Boolean numerico, Boolean coma)
-            => (valor.Trim().Length == 0 ? campo + " = NULL " :
-                    numerico ? campo + " = " + valor + " " :
-                           campo + " = '" + (GetUpperCase ? valor.ToUpper().Trim().Replace("'", "''") : valor.Trim().Replace("'", "''")) + "' ") +
-                           (coma ? ", " : ""); // End Function MC
-
 
         private bool GetUpperCase
         {

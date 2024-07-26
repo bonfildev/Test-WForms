@@ -58,7 +58,7 @@ namespace SeSecEL
                 if (gvParameters.Rows[R.Index].Cells[3].Value != null)
                 {
                     strSQL.Append("UPDATE [Parameters] SET ");
-                    strSQL.Append(sql.MC("Value", Convert.ToString(gvParameters.Rows[R.Index].Cells[3].Value.ToString()), false, false));
+                    strSQL.Append("Value = '" + Convert.ToString(gvParameters.Rows[R.Index].Cells[3].Value.ToString()) + "'" );
                     strSQL.Append("WHERE ParameterID = " + Convert.ToString(gvParameters.Rows[R.Index].Cells[0].Value.ToString()));
                     strSQL.Append("     AND UserID = " + CommonCache.UserID);
                     sql.ExecCommand(Forma.ToString(), CommonCache.UserName, "btnUpdateParameters_Click", strSQL);

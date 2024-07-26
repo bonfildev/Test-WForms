@@ -104,13 +104,13 @@ namespace SeSecEL
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("INSERT Users(FirstName, LastName, email, Inactive, Password, CreateUser, CreateDate) ");
             strSQL.Append("VALUES ( ");
-            strSQL.Append(sql.CI(txtFirstName.Text));
-            strSQL.Append(sql.CI(txtLastName.Text));
-            strSQL.Append(sql.CI(txtEmail.Text));
-            strSQL.Append(sql.CI(chkInactive.Checked ? "1" : "0", true));
-            strSQL.Append(sql.CI(txtPassword.Text));
-            strSQL.Append(sql.CI(CommonCache.UserID, true));
-            strSQL.Append(sql.CI("GetDate()", true, false));
+            strSQL.Append("'" + txtFirstName.Text + "'");
+            strSQL.Append("'" + txtLastName.Text + "'");
+            strSQL.Append("'" + txtEmail.Text + "'");
+            strSQL.Append("'" + (chkInactive.Checked ? "1" : "0") + "'");
+            strSQL.Append("'" + txtPassword.Text + "'");
+            strSQL.Append("'" + CommonCache.UserID + "'");
+            strSQL.Append("GetDate()");
             strSQL.Append(")");
             if (sql.ExecCommand(Forma.ToString(), CommonCache.UserName, "ProcesoAlta", strSQL) != 0)
             {
@@ -123,13 +123,13 @@ namespace SeSecEL
             SqlTools sql = new SqlTools();
             StringBuilder strSQL = new StringBuilder();
             strSQL.AppendLine("UPDATE Users SET  ");
-            strSQL.AppendLine("FirstName = " + sql.CI(txtFirstName.Text));
-            strSQL.AppendLine("LastName = " + sql.CI(txtLastName.Text));
-            strSQL.AppendLine("email = " + sql.CI(txtEmail.Text));
-            strSQL.AppendLine("Inactive = " + sql.CI(chkInactive.Checked ? "1" : "0", true));
-            strSQL.AppendLine("Password = " + sql.CI(txtPassword.Text));
-            strSQL.AppendLine("UpdateUser = " + sql.CI(CommonCache.UserID, true));
-            strSQL.AppendLine("UpdateDate = " + sql.CI("GetDate()", true, false));
+            strSQL.AppendLine("FirstName = '" + txtFirstName.Text + "'");
+            strSQL.AppendLine("LastName = '" + txtLastName.Text + "'");
+            strSQL.AppendLine("email = '" + txtEmail.Text + "'");
+            strSQL.AppendLine("Inactive = '" + (chkInactive.Checked ? "1" : "0") + "'");
+            strSQL.AppendLine("Password = '" + txtPassword.Text + "'");
+            strSQL.AppendLine("UpdateUser = '" +  CommonCache.UserID + "'");
+            strSQL.AppendLine("UpdateDate = " + "GetDate()");
             strSQL.AppendLine(" WHERE UserID = " + ID);
             if (sql.ExecCommand(Forma.ToString(), CommonCache.UserName, "Modifica", strSQL) != 0)
             {
