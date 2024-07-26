@@ -1,4 +1,5 @@
-This is a version of a free Surveilance system developed on windows forms, this version only works on x64, this work well on the integrated camera,
+This is a version of a free Surveilance system developed on windows forms,
+this version only works on x64, this work well on the integrated camera,
 to work with external cameras it needs more configuration
 We use EMGUCV for this eample.
 Sql server connection, needed tables:
