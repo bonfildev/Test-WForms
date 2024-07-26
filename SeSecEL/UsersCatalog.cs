@@ -112,7 +112,7 @@ namespace SeSecEL
             strSQL.Append("'" + CommonCache.UserID + "'");
             strSQL.Append("GetDate()");
             strSQL.Append(")");
-            if (sql.ExecCommand(Forma.ToString(), CommonCache.UserName, "ProcesoAlta", strSQL) != 0)
+            if (sql.ExeccuteCommand(Forma.ToString(), "ProcesoAlta", strSQL) != 0)
             {
                 AddParameters(txtEmail.Text);
                 MessageBox.Show("Registro actualizado","",MessageBoxButtons.OK);
@@ -131,7 +131,7 @@ namespace SeSecEL
             strSQL.AppendLine("UpdateUser = '" +  CommonCache.UserID + "'");
             strSQL.AppendLine("UpdateDate = " + "GetDate()");
             strSQL.AppendLine(" WHERE UserID = " + ID);
-            if (sql.ExecCommand(Forma.ToString(), CommonCache.UserName, "Modifica", strSQL) != 0)
+            if (sql.ExeccuteCommand(Forma.ToString(),  "Modifica", strSQL) != 0)
             {
                 MessageBox.Show("Registro actualizado", "", MessageBoxButtons.OK);
             }
@@ -142,16 +142,16 @@ namespace SeSecEL
             SqlTools sql = new SqlTools();
             StringBuilder strSQL = new StringBuilder();
             strSQL.AppendLine("Select UserID FROM Users wehre email = '" + email +"'");
-            string UserID = sql.GetID(Forma, CommonCache.UserName, strSQL.ToString());
+            string UserID = sql.GetID(Forma,   strSQL.ToString());
             if (UserID.Length != 0)
             {
                 strSQL.Append("DELETE [Parameters]");
                 strSQL.Append("WHERE  UserID = " + UserID);
-                sql.ExecCommand(Forma.ToString(), CommonCache.UserName, "Modifica", strSQL);
+                sql.ExeccuteCommand(Forma.ToString(),  "Modifica", strSQL);
                 strSQL.Clear();
                 strSQL.Append("INSERT INTO [Parameters]");
                 strSQL.Append("SELECT ParameterID," + UserID +",Value,Description FROM [Parameters]");
-                sql.ExecCommand(Forma.ToString(), CommonCache.UserName, "Modifica", strSQL);
+                sql.ExeccuteCommand(Forma.ToString(), "Modifica", strSQL);
             }
 
         }

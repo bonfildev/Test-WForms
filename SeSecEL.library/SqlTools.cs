@@ -12,9 +12,9 @@ namespace SeSecEL.library
         public string MSGError = string.Empty;
         public const int TimeOut = 1200;
         public string FormatDate() => ("yyyy-MM-dd");
-        public long ExecCommand(string pagina, string UserName, string funcion, StringBuilder strSQL)  // Comando a ejecutar en la base de datos
+        public long ExeccuteCommand(string pagina, string funcion, StringBuilder strSQL)  // Comando a ejecutar en la base de datos
         {
-            SqlConnection cnComando = OpenConnection(pagina, UserName);
+            SqlConnection cnComando = OpenSQLConnection(pagina);
             long Rows = 0;
             MSGError = string.Empty;
 
@@ -52,7 +52,7 @@ namespace SeSecEL.library
         } // End ExecCommand 
 
         private string GetConnection() => ConfigurationManager.AppSettings["StringConection"];
-        public SqlConnection OpenConnection(string Pagina, string UserName)
+        public SqlConnection OpenSQLConnection(string Pagina)
         {
             SqlConnection cnSQL = new SqlConnection { ConnectionString = GetConnection() };
             MSGError = string.Empty;
@@ -63,7 +63,7 @@ namespace SeSecEL.library
             catch (Exception ex)
             {
                 WriteToFile( ex.Message);
-                MSGError = "SQL_Tools.OpenConnection:" + ex.Message;
+                MSGError = "SQL_Tools.OpenSQLConnection:" + ex.Message;
                 cnSQL = null;
             }
             return cnSQL;
@@ -96,7 +96,7 @@ namespace SeSecEL.library
         public SqlConnection TestConnection(string pagina, string UserName)
         {
             SqlConnection cnSQL = null;
-            cnSQL = OpenConnection(pagina, UserName);
+            cnSQL = OpenSQLConnection(pagina);
             return cnSQL;
         }
 
@@ -104,7 +104,7 @@ namespace SeSecEL.library
         {
             SqlConnection cnSQL = null;
             SqlCommand cmSQL = null;
-            cnSQL = OpenConnection(pagina, UserName);
+            cnSQL = OpenSQLConnection(pagina);
             SqlDataReader drSQL = null;
             MSGError = string.Empty;
 
@@ -131,7 +131,7 @@ namespace SeSecEL.library
 
                 try
                 {
-                    SqlConnection cnDataSet = OpenConnection(pagina, UserName);
+                    SqlConnection cnDataSet = OpenSQLConnection(pagina);
                     if (cnDataSet != null)
                     {
                         using (SqlDataAdapter daDataSet = new SqlDataAdapter(strSQL.ToString(), cnDataSet))
@@ -167,7 +167,7 @@ namespace SeSecEL.library
         }
         public string GetID(string forma, string UserName, string strQuery)
         {
-            SqlConnection cnClave = OpenConnection(forma, UserName);
+            SqlConnection cnClave = OpenSQLConnection(forma);
             string strValor = "";
             MSGError = string.Empty;
 

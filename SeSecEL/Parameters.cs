@@ -61,7 +61,7 @@ namespace SeSecEL
                     strSQL.Append("Value = '" + Convert.ToString(gvParameters.Rows[R.Index].Cells[3].Value.ToString()) + "'" );
                     strSQL.Append("WHERE ParameterID = " + Convert.ToString(gvParameters.Rows[R.Index].Cells[0].Value.ToString()));
                     strSQL.Append("     AND UserID = " + CommonCache.UserID);
-                    sql.ExecCommand(Forma.ToString(), CommonCache.UserName, "btnUpdateParameters_Click", strSQL);
+                    sql.ExeccuteCommand(Forma.ToString(), "btnUpdateParameters_Click", strSQL);
                 }
             }
         }
