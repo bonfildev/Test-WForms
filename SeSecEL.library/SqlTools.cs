@@ -22,11 +22,11 @@ namespace SeSecEL.library
             {
                 try
                 {
-                    SqlTransaction trComando;                  // Variable para la transación
+                    SqlTransaction trComando;                 
                     SqlCommand cmComando = new SqlCommand(strSQL.ToString(), cnComando);
-                    trComando = cnComando.BeginTransaction();  // Inicia con el Bloqueo
+                    trComando = cnComando.BeginTransaction();  
 
-                    cmComando.CommandTimeout = TimeOut;   // Cambioel Time Out por defualt
+                    cmComando.CommandTimeout = TimeOut;   
                     cmComando.Transaction = trComando;
                     cmComando.CommandType = CommandType.Text;
 
