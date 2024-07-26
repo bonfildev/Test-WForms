@@ -5,5 +5,5 @@ We use EMGUCV for this eample. <br>
 <br>
 For additional information can message me diego.bonfil.paz@gmail.com
 
-![alt text](https://github.com/mikibb1/SeSecELx64/blob/master/Imagenes/camara%20Reducido.jpeg)
+![alt text]([https://github.com/mikibb1/SeSecELx64/blob/master/Imagenes/camara%20Reducido.jpeg](https://github.com/mikibb1/SeSecELx64/blob/master/Imagenes/login.JPG))
 
