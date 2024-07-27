@@ -41,15 +41,16 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.ddlSelectCamera = new System.Windows.Forms.ComboBox();
+            this.btnOpenImage = new System.Windows.Forms.Button();
+            this.btnCaptureFrame = new System.Windows.Forms.Button();
             this.lbLength = new System.Windows.Forms.Label();
             this.lblRecCam1 = new System.Windows.Forms.Label();
             this.btnStartRecord = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.recordingTimer = new System.Windows.Forms.Timer(this.components);
             this.TimerF = new System.Windows.Forms.Timer(this.components);
-            this.btnOpenImage = new System.Windows.Forms.Button();
-            this.btnCaptureFrame = new System.Windows.Forms.Button();
-            this.ddlSelectCamera = new System.Windows.Forms.ComboBox();
+            this.slWaveIn = new System.Windows.Forms.ComboBox();
             this.panelContainer.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -171,6 +172,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.slWaveIn);
             this.panel2.Controls.Add(this.ddlSelectCamera);
             this.panel2.Controls.Add(this.btnOpenImage);
             this.panel2.Controls.Add(this.btnCaptureFrame);
@@ -180,8 +182,34 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(242, 288);
+            this.panel2.Size = new System.Drawing.Size(242, 319);
             this.panel2.TabIndex = 0;
+            // 
+            // ddlSelectCamera
+            // 
+            this.ddlSelectCamera.FormattingEnabled = true;
+            this.ddlSelectCamera.Location = new System.Drawing.Point(5, 19);
+            this.ddlSelectCamera.Name = "ddlSelectCamera";
+            this.ddlSelectCamera.Size = new System.Drawing.Size(230, 28);
+            this.ddlSelectCamera.TabIndex = 27;
+            // 
+            // btnOpenImage
+            // 
+            this.btnOpenImage.Location = new System.Drawing.Point(1, 175);
+            this.btnOpenImage.Name = "btnOpenImage";
+            this.btnOpenImage.Size = new System.Drawing.Size(138, 41);
+            this.btnOpenImage.TabIndex = 26;
+            this.btnOpenImage.Text = "abrir imagen";
+            this.btnOpenImage.UseVisualStyleBackColor = true;
+            // 
+            // btnCaptureFrame
+            // 
+            this.btnCaptureFrame.Location = new System.Drawing.Point(5, 128);
+            this.btnCaptureFrame.Name = "btnCaptureFrame";
+            this.btnCaptureFrame.Size = new System.Drawing.Size(138, 41);
+            this.btnCaptureFrame.TabIndex = 25;
+            this.btnCaptureFrame.Text = "Capturar Imagen";
+            this.btnCaptureFrame.UseVisualStyleBackColor = true;
             // 
             // lbLength
             // 
@@ -236,31 +264,13 @@
             this.TimerF.Interval = 31;
             this.TimerF.Tick += new System.EventHandler(this.TimerF_Tick);
             // 
-            // btnOpenImage
+            // slWaveIn
             // 
-            this.btnOpenImage.Location = new System.Drawing.Point(1, 175);
-            this.btnOpenImage.Name = "btnOpenImage";
-            this.btnOpenImage.Size = new System.Drawing.Size(138, 41);
-            this.btnOpenImage.TabIndex = 26;
-            this.btnOpenImage.Text = "abrir imagen";
-            this.btnOpenImage.UseVisualStyleBackColor = true;
-            // 
-            // btnCaptureFrame
-            // 
-            this.btnCaptureFrame.Location = new System.Drawing.Point(5, 128);
-            this.btnCaptureFrame.Name = "btnCaptureFrame";
-            this.btnCaptureFrame.Size = new System.Drawing.Size(138, 41);
-            this.btnCaptureFrame.TabIndex = 25;
-            this.btnCaptureFrame.Text = "Capturar Imagen";
-            this.btnCaptureFrame.UseVisualStyleBackColor = true;
-            // 
-            // ddlSelectCamera
-            // 
-            this.ddlSelectCamera.FormattingEnabled = true;
-            this.ddlSelectCamera.Location = new System.Drawing.Point(5, 19);
-            this.ddlSelectCamera.Name = "ddlSelectCamera";
-            this.ddlSelectCamera.Size = new System.Drawing.Size(230, 28);
-            this.ddlSelectCamera.TabIndex = 27;
+            this.slWaveIn.FormattingEnabled = true;
+            this.slWaveIn.Location = new System.Drawing.Point(5, 249);
+            this.slWaveIn.Name = "slWaveIn";
+            this.slWaveIn.Size = new System.Drawing.Size(230, 28);
+            this.slWaveIn.TabIndex = 28;
             // 
             // CaptureDeviceTest
             // 
@@ -312,5 +322,6 @@
         private System.Windows.Forms.Button btnOpenImage;
         private System.Windows.Forms.Button btnCaptureFrame;
         private System.Windows.Forms.ComboBox ddlSelectCamera;
+        private System.Windows.Forms.ComboBox slWaveIn;
     }
 }

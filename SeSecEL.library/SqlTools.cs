@@ -12,7 +12,7 @@ namespace SeSecEL.library
         public string MSGError = string.Empty;
         public const int TimeOut = 1200;
         public string FormatDate() => ("yyyy-MM-dd");
-        public long ExeccuteCommand(string pagina, string funcion, StringBuilder strSQL)  // Comando a ejecutar en la base de datos
+        public long ExeccuteCommand(string pagina, string funcion, StringBuilder strSQL)
         {
             SqlConnection cnComando = OpenSQLConnection(pagina);
             long Rows = 0;
@@ -22,11 +22,11 @@ namespace SeSecEL.library
             {
                 try
                 {
-                    SqlTransaction trComando;                 
+                    SqlTransaction trComando;
                     SqlCommand cmComando = new SqlCommand(strSQL.ToString(), cnComando);
-                    trComando = cnComando.BeginTransaction();  
+                    trComando = cnComando.BeginTransaction();
 
-                    cmComando.CommandTimeout = TimeOut;   
+                    cmComando.CommandTimeout = TimeOut;
                     cmComando.Transaction = trComando;
                     cmComando.CommandType = CommandType.Text;
 
@@ -62,7 +62,7 @@ namespace SeSecEL.library
             }
             catch (Exception ex)
             {
-                WriteToFile( ex.Message);
+                WriteToFile(ex.Message);
                 MSGError = "SQL_Tools.OpenSQLConnection:" + ex.Message;
                 cnSQL = null;
             }
@@ -165,7 +165,7 @@ namespace SeSecEL.library
                 return bValor;
             }
         }
-        public string GetID(string forma, string UserName, string strQuery)
+        public string GetID(string forma, string strQuery)
         {
             SqlConnection cnClave = OpenSQLConnection(forma);
             string strValor = "";

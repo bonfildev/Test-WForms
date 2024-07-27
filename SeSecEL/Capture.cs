@@ -15,6 +15,7 @@ using SeSecEL.library;
 using Accord.Audio;
 using Accord.Audio.Formats;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace SeSecEL
 {
@@ -33,6 +34,7 @@ namespace SeSecEL
         private Bitmap video;
         public VideoFileWriter FileWriter = new VideoFileWriter(); //video with compression for an ipcammera or Webcam
         private SaveFileDialog saveAvi;
+        private SaveFileDialog saveFileDialog1;
         private Stopwatch stopWatch = null;
         private string vFile;
         //-----------------Audio 
@@ -48,7 +50,9 @@ namespace SeSecEL
         //----------------- 
         private MotionDetector MDetector;
         private double LevelDetection;
+        private double sensitivity = 0;
 
+        private string iFile;
         //Border
         //----------------- 
         private Color borderColor = Color.FromArgb(128, 128, 255);
@@ -90,7 +94,7 @@ namespace SeSecEL
         {
             MotionDetector();
             txtMotionDetector.Text = "0";
-            panelContainer.BackColor = System.Drawing.Color.FromArgb(CommonCache.BackGroundColorR, CommonCache.BackGroundColorG, CommonCache.BackGroundColorB);
+            panelContainer.BackColor = System.Drawing.Color.FromArgb(CommonCache.BackGroundColorR, CommonCache.BackGroundColorG, CommonCache.BackGroundColorB); 
             lblRecCam1.Visible = false;
             source = new AudioCaptureDevice()
             {
@@ -178,7 +182,11 @@ namespace SeSecEL
                 //Deteccion de movimiento
                 if (chkMotionDetector.Checked)
                 {
-                    LevelDetection = MDetector.ProcessFrame(image);
+                    LevelDetection = MDetector.ProcessFrame(image); 
+                    if(CommonCache.Sensitivity >= Int64.Parse(LevelDetection.ToString()))
+                    {
+                        CaptureFrame();
+                    }
                 }
             }
             catch (Exception ex)
@@ -216,7 +224,7 @@ namespace SeSecEL
 
         private void timerMD_Tick(object sender, EventArgs e)
         {
-        txtMotionDetector.Text = LevelDetection.ToString("00.00000000000000000000");
+            txtMotionDetector.Text = LevelDetection.ToString("00.00000000000000000000");
             lbLength.Text = String.Format("Length: {0:00.00} sec.", duration.Seconds);
         }
 
@@ -306,11 +314,14 @@ namespace SeSecEL
                 source.Start();
                 FinalVideo.Start();
 
-                Startrecording();
+                //Startrecording();
 
+                 
             }
         }
-
+        /// <summary>
+        /// Start The Video recording
+        /// </summary>
         private void Startrecording()
         {
             if (video != null)
@@ -483,6 +494,18 @@ namespace SeSecEL
             exeProcess.Close();
         }
 
+        private void btnCaptureFrame_Click(object sender, EventArgs e)
+        {
+            CaptureFrame();
+        }
 
+        private void CaptureFrame()
+        {
+            if (bValRec)
+            {
+                iFile = $"img_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.jpeg";
+                pictureBox1.Image.Save(GetPath() + iFile, System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+        }
     }
 }

@@ -39,8 +39,8 @@ namespace SeSecEL
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.lbLength = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbLength = new System.Windows.Forms.Label();
             this.lblRecCam1 = new System.Windows.Forms.Label();
             this.txtMotionDetector = new System.Windows.Forms.TextBox();
             this.chkMotionDetector = new System.Windows.Forms.CheckBox();
@@ -55,6 +55,7 @@ namespace SeSecEL
             this.panelContainer = new System.Windows.Forms.Panel();
             this.pictureBox1 = new Accord.Controls.PictureBox();
             this.videoSourcePlayer1 = new Accord.Controls.VideoSourcePlayer();
+            this.btnCaptureFrame = new System.Windows.Forms.Button();
             this.statusStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -123,7 +124,6 @@ namespace SeSecEL
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.White;
-            this.tabPage1.Controls.Add(this.lbLength);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
@@ -132,19 +132,10 @@ namespace SeSecEL
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             // 
-            // lbLength
-            // 
-            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbLength.Location = new System.Drawing.Point(104, 274);
-            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbLength.Name = "lbLength";
-            this.lbLength.Size = new System.Drawing.Size(108, 62);
-            this.lbLength.TabIndex = 22;
-            this.lbLength.Text = "Length: 00.00 sec.";
-            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnCaptureFrame);
+            this.groupBox2.Controls.Add(this.lbLength);
             this.groupBox2.Controls.Add(this.lblRecCam1);
             this.groupBox2.Controls.Add(this.txtMotionDetector);
             this.groupBox2.Controls.Add(this.chkMotionDetector);
@@ -154,10 +145,21 @@ namespace SeSecEL
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(311, 168);
+            this.groupBox2.Size = new System.Drawing.Size(311, 203);
             this.groupBox2.TabIndex = 21;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Camara 1";
+            // 
+            // lbLength
+            // 
+            this.lbLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbLength.Location = new System.Drawing.Point(7, 165);
+            this.lbLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbLength.Name = "lbLength";
+            this.lbLength.Size = new System.Drawing.Size(245, 36);
+            this.lbLength.TabIndex = 22;
+            this.lbLength.Text = "Length: 00.00 sec.";
+            this.lbLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblRecCam1
             // 
@@ -311,6 +313,16 @@ namespace SeSecEL
             this.videoSourcePlayer1.VideoSource = null;
             this.videoSourcePlayer1.NewFrame += new Accord.Controls.VideoSourcePlayer.NewFrameHandler(this.videoSourcePlayer1_NewFrame);
             // 
+            // btnCaptureFrame
+            // 
+            this.btnCaptureFrame.Location = new System.Drawing.Point(125, 68);
+            this.btnCaptureFrame.Name = "btnCaptureFrame";
+            this.btnCaptureFrame.Size = new System.Drawing.Size(146, 35);
+            this.btnCaptureFrame.TabIndex = 23;
+            this.btnCaptureFrame.Text = "Capture Frame";
+            this.btnCaptureFrame.UseVisualStyleBackColor = true;
+            this.btnCaptureFrame.Click += new System.EventHandler(this.btnCaptureFrame_Click);
+            // 
             // Capture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -369,5 +381,6 @@ namespace SeSecEL
         private Accord.Controls.VideoSourcePlayer videoSourcePlayer1;
         private Accord.Controls.PictureBox pictureBox1;
         private System.Windows.Forms.Label lbLength;
+        private System.Windows.Forms.Button btnCaptureFrame;
     }
 }

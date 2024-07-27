@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
@@ -9,12 +8,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BasicAudio;
 using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.Util;
-using Emgu.Util;
 using FFMpegCore;
-using SeSecEL.library;
+using SeSecEL.library; 
+using Accord.Video.DirectShow;
+using NAudio.Wave;
 
 namespace SeSecEL
 {
@@ -34,6 +32,8 @@ namespace SeSecEL
         bool Pause;             //Sin Utilizar, Variable para reproducir un video
         bool isCameraRunning = false;   //Variable para ver si la captura esta detenida
         private Stopwatch stopWatch = null;
+
+        FilterInfoCollection fic;
         //Video- Deteccion del rostro
         static readonly CascadeClassifier faceCascadeClassifier = new CascadeClassifier("haarcascade_frontalface_alt_tree.xml");
         static readonly CascadeClassifier eyesCascadeClassifier = new CascadeClassifier("haarcascade_eye.xml");
@@ -64,12 +64,19 @@ namespace SeSecEL
 
         private void InitCampos()
         {
-            var videoDevices = new VideoCapture();
-            //foreach (var device in videoDevices)
-            //{
-            //    ddlSelectCamera.Items.Add(device.Name);
-            //}
+            fic = new FilterInfoCollection(FilterCategory.VideoInputDevice); 
+            foreach (FilterInfo fi in fic)
+            {
+                ddlSelectCamera.Items.Add(fi.Name);
+            }
+            ddlSelectCamera.SelectedIndex = 0;
 
+            for (int n = 0; n < WaveIn.DeviceCount; n++)
+            {
+                var caps = WaveIn.GetCapabilities(n); 
+                slWaveIn.Items.Add(caps.ProductName);
+                //Console.WriteLine($"{n}: {caps.ProductName} {caps.Channels}");
+            }
 
             ResizeControls();
         }
@@ -108,7 +115,7 @@ namespace SeSecEL
         {
             DisposeCameraResources();
             isCameraRunning = true;
-            capture = new VideoCapture(0);
+            capture = new VideoCapture(ddlSelectCamera.SelectedIndex);
             capture.Start();
             vFile = $"video_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.mp4";
             outputVideo = new VideoWriter(GetPath() + vFile, 29, new System.Drawing.Size(640, 480), true);
@@ -116,14 +123,21 @@ namespace SeSecEL
 
         private void StartMicrophone()
         {
+            
             audioRecorder = new Recording();
+            if (audioRecorder.SoundCardExists())
+            {
+                bool test = true;
+                test = false;
+            }
             aFile = $"Audio_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.wav";
             audioRecorder.Filename = GetPath()+ aFile;
+            
             isMicrophoneJustStarted = true;
         }
 
         private void StopMicrophone()
-        {
+        { 
             audioRecorder.StopRecording();
         }
 
@@ -132,6 +146,7 @@ namespace SeSecEL
             if (isCameraRunning)
             {
                 isCameraRunning = false;
+                isMicrophoneJustStarted = false;
                 recordingTimer.Stop();
                 recordingTimer.Enabled = false;
                 TimerF.Stop();
@@ -194,22 +209,28 @@ namespace SeSecEL
             {
                 video.Dispose();
             }
-
             if (capture != null)
             {
-                capture.Dispose();
-            }
-            if (capture != null)
-            {
+                //capture.ImageGrabbed -= CapOnImageGrabbed; 
                 capture.Pause();
                 capture.Stop();
                 capture.Dispose();
             }
             if (outputVideo != null)
             {
+                
                 outputVideo.Dispose();
             }
         }
+
+
+        private void CapOnImageGrabbed(object sender, EventArgs e)
+        { 
+            //Debug.WriteLine("Frames: " + frameCount);
+            capture.Retrieve(null);
+            //OnImageAvailable(capturedImage);
+        }
+
         private void recordingTimer_Tick(object sender, EventArgs e)
         {
             if (capture.IsOpened)
@@ -313,16 +334,24 @@ namespace SeSecEL
 
         private void Capture_ImageGrabbed(object sender, EventArgs e)
         {
-            try
+            if (isCameraRunning)
             {
-                Mat m = new Mat();
-                capture.Retrieve(m);
-                ProcesarImagen(m.ToBitmap());
+                try
+                {
+                    Mat m = new Mat();
+                    capture.Retrieve(m);
+                    if (m != null)
+                    {
+                        ProcesarImagen(m.ToBitmap());
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            
         }
 
         /// <summary>
@@ -334,22 +363,36 @@ namespace SeSecEL
         {
             try
             {
-                Image<Bgr, byte> bgrFrame = capture.QueryFrame().ToImage<Bgr, Byte>();
-                Bitmap bitmap = (Bitmap)btm.Clone();
-                Image<Gray, byte> grayframe = bgrFrame.Convert<Gray, byte>();
-                Rectangle[] rectangles = faceCascadeClassifier.DetectMultiScale(grayframe, 1.1, 1);
-                foreach (var rectangle in rectangles)
+                if (btm != null)
                 {
-                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    Image<Bgr, byte> bgrFrame = capture.QueryFrame().ToImage<Bgr, Byte>();
+                    Bitmap bitmap = (Bitmap)btm.Clone();
+                    Image<Gray, byte> grayframe = bgrFrame.Convert<Gray, byte>();
+                    Rectangle[] rectangles = faceCascadeClassifier.DetectMultiScale(grayframe, 1.1, 1);
+                    foreach (var rectangle in rectangles)
                     {
-                        using (Pen pen = new Pen(Color.Blue, 4))
+                        using (Graphics graphics = Graphics.FromImage(bitmap))
                         {
-                            graphics.DrawRectangle(pen, rectangle);
-                        }
+                            using (Pen pen = new Pen(Color.Blue, 4))
+                            {
+                                graphics.DrawRectangle(pen, rectangle);
+                            }
 
+                        }
                     }
+                    rectangles = eyesCascadeClassifier.DetectMultiScale(grayframe, 1.1, 1);
+                    foreach (var rectangle in rectangles)
+                    {
+                        using (Graphics graphics = Graphics.FromImage(bitmap))
+                        {
+                            using (Pen pen = new Pen(Color.Red, 1))
+                            {
+                                graphics.DrawRectangle(pen, rectangle);
+                            }
+                        }
+                    }
+                    pictureBox1.Image = bitmap;
                 }
-                pictureBox1.Image = bitmap;
             }
             catch(Exception ex)
             {

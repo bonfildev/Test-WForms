@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Accord.Video.DirectShow;
 using BasicAudio;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -33,6 +34,7 @@ namespace SeSecEL
         bool Pause;             //Sin Utilizar, Variable para reproducir un video
         bool isCameraRunning = false;   //Variable para ver si la captura esta detenida
         private Stopwatch stopWatch = null;
+        FilterInfoCollection fic;
         //AUdio
         bool isMicrophoneJustStarted;
         Recording audioRecorder;
@@ -55,13 +57,25 @@ namespace SeSecEL
         {
             panelContainer.BackColor = System.Drawing.Color.FromArgb(CommonCache.BackGroundColorR, CommonCache.BackGroundColorG, CommonCache.BackGroundColorB);
             lblRecCam1.Visible = false;
+            InitCampos();
+        }
+
+        private void InitCampos()
+        {
+
+            fic = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo fi in fic)
+            {
+                ddlSelectCamera.Items.Add(fi.Name);
+            }
+            ddlSelectCamera.SelectedIndex = 0;
             ResizeControls();
         }
         private void StartCamera()
         {
             DisposeCameraResources();
             isCameraRunning = true;
-            capture = new VideoCapture(0);
+            capture = new VideoCapture(ddlSelectCamera.SelectedIndex);
             capture.Start();
             vFile = $"video_{System.DateTime.Now.ToString("ddMMyyyy-HH-mm-ss")}.mp4";
             outputVideo = new VideoWriter(GetPath() + vFile, 29, new System.Drawing.Size(640, 480), true);
