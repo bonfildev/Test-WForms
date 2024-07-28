@@ -1,21 +1,16 @@
-﻿using System;
+﻿using Accord.Video.DirectShow;
+using BasicAudio;
+using Emgu.CV;
+using FFMpegCore;
+using SeSecEL.library;
+using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Accord.Video.DirectShow;
-using BasicAudio;
-using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using FFMpegCore;
-using SeSecEL.library;
 
 namespace SeSecEL
 {
