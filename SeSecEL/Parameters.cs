@@ -38,7 +38,7 @@ namespace SeSecEL
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("SELECT ParameterID,UserID,Description,Value");
             strSQL.Append(" FROM [Parameters] ");
-            DataTable tblConsulta = sql.FillDataTable(Forma.ToString(), form.lblUserName.Text, "BuscarParametros", strSQL);
+            DataTable tblConsulta = sql.FillDT(Forma.ToString(), "BuscarParametros", strSQL);
             gvParameters.DataSource = tblConsulta;
             foreach (DataGridViewColumn C in gvParameters.Columns)
             {
@@ -61,7 +61,7 @@ namespace SeSecEL
                     strSQL.Append("Value = '" + Convert.ToString(gvParameters.Rows[R.Index].Cells[3].Value.ToString()) + "'" );
                     strSQL.Append("WHERE ParameterID = " + Convert.ToString(gvParameters.Rows[R.Index].Cells[0].Value.ToString()));
                     strSQL.Append("     AND UserID = " + CommonCache.UserID);
-                    sql.ExeccuteCommand(Forma.ToString(), "btnUpdateParameters_Click", strSQL);
+                    sql.ExeccuteCommand(Forma.ToString(), strSQL);
                 }
             }
         }

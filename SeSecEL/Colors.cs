@@ -47,7 +47,7 @@ namespace SeSecEL
             strSQL.AppendLine("     WHERE [Parameters].ParameterID = " + Param);
             strSQL.AppendLine("     AND [Parameters].UserID = " + CommonCache.UserID);
 
-            sql.ExeccuteCommand("Colors", "UpdateColorParameter", strSQL);
+            sql.ExeccuteCommand("Colors", strSQL);
         }
 
         private void Colors_Load(object sender, EventArgs e)

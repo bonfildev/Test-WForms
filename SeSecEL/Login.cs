@@ -26,7 +26,7 @@ namespace SeSecEL
         private bool ValidaConexion()
         { 
             SqlConnection cn = new SqlConnection();
-            cn = sql.TestConnection("","");
+            cn = sql.TestConnection("");
             if(cn == null)
             {
                 return false;
@@ -44,7 +44,7 @@ namespace SeSecEL
             strSQL.Append(" WHERE email = '" + txtUsuario.Text + "'");
             strSQL.Append(" AND Password = '" + txtContraseña.Text + "'");
             strSQL.Append(" AND Inactive = 0");
-            SqlDataReader drUser = sql.OpenDataReader("Login", "", "LeeCampos", strSQL);
+            SqlDataReader drUser = sql.OpenDataReader("Login", "LeeCampos", strSQL);
             bool bValida = false;
             if (drUser != null)
             {
@@ -63,7 +63,7 @@ namespace SeSecEL
             strSQL.Append("SELECT UserName = FirstName + ' ' + LastName FROM Users ");
             strSQL.Append(" WHERE email = '" + txtUsuario.Text + "'");
             strSQL.Append(" AND Password = '" + txtContraseña.Text + "'");
-            SqlDataReader drUser = sql.OpenDataReader("Login", "", "LeeCampos", strSQL);
+            SqlDataReader drUser = sql.OpenDataReader("Login",  "LeeCampos", strSQL);
             string UserName = "";
             if (drUser != null)
             {
@@ -89,7 +89,7 @@ namespace SeSecEL
             strSQL.Append("SELECT UserID FROM Users ");
             strSQL.Append(" WHERE email = '" + txtUsuario.Text + "'");
             strSQL.Append(" AND Password = '" + txtContraseña.Text + "'");
-            SqlDataReader drUser = sql.OpenDataReader("Login", "", "LeeCampos", strSQL);
+            SqlDataReader drUser = sql.OpenDataReader("Login", "LeeCampos", strSQL);
             string drUserID = "";
             if (drUser != null)
             {
@@ -116,7 +116,7 @@ namespace SeSecEL
             strSQL.Append("SELECT Value FROM Parameters ");
             strSQL.Append(" WHERE UserID = '" + CommonCache.UserID + "'");
             strSQL.Append(" AND ParameterID = '" + param + "'");
-            SqlDataReader drParameter = sql.OpenDataReader("Login", "", "LeeCampos", strSQL);
+            SqlDataReader drParameter = sql.OpenDataReader("Login", "LeeCampos", strSQL);
             int Param = 255;
             if (drParameter != null)
             {
@@ -141,7 +141,7 @@ namespace SeSecEL
             strSQL.Append("SELECT Value FROM Parameters ");
             strSQL.Append(" WHERE UserID = '" + CommonCache.UserID + "'");
             strSQL.Append(" AND ParameterID = '" + param + "'");
-            SqlDataReader drParameter = sql.OpenDataReader("Login", "", "LeeCampos", strSQL);
+            SqlDataReader drParameter = sql.OpenDataReader("Login", "LeeCampos", strSQL);
             double Param = 0.000001;
             if (drParameter != null)
             {

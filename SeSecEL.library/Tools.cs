@@ -126,7 +126,7 @@ namespace SeSecEL.library
             }
             return drSQL;
         }
-        public DataTable FillDataTable(string pagina, string funcion, StringBuilder strSQL)
+        public DataTable FillDT(string pagina, string funcion, StringBuilder strSQL)
         {
             using (DataTable tbl = new DataTable("consulta"))
             {

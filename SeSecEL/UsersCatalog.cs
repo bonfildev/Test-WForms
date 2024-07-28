@@ -30,7 +30,7 @@ namespace SeSecEL
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("SELECT  UserID,FirstName,LastName,email,Inactive,Profile,Password FROM Users ");
             strSQL.Append(" WHERE UserID = " + id); 
-            SqlDataReader drUser = sql.OpenDataReader("Login", "", "LeeCampos", strSQL); 
+            SqlDataReader drUser = sql.OpenDataReader("Login", "LeeCampos", strSQL); 
             if (drUser != null)
             {
                 try
@@ -112,7 +112,7 @@ namespace SeSecEL
             strSQL.Append("'" + CommonCache.UserID + "'");
             strSQL.Append("GetDate()");
             strSQL.Append(")");
-            if (sql.ExeccuteCommand(Forma.ToString(), "ProcesoAlta", strSQL) != 0)
+            if (sql.ExeccuteCommand(Forma.ToString(), strSQL) != 0)
             {
                 AddParameters(txtEmail.Text);
                 MessageBox.Show("Registro actualizado","",MessageBoxButtons.OK);
@@ -131,7 +131,7 @@ namespace SeSecEL
             strSQL.AppendLine("UpdateUser = '" +  CommonCache.UserID + "'");
             strSQL.AppendLine("UpdateDate = " + "GetDate()");
             strSQL.AppendLine(" WHERE UserID = " + ID);
-            if (sql.ExeccuteCommand(Forma.ToString(),  "Modifica", strSQL) != 0)
+            if (sql.ExeccuteCommand(Forma.ToString(), strSQL) != 0)
             {
                 MessageBox.Show("Registro actualizado", "", MessageBoxButtons.OK);
             }
@@ -147,11 +147,11 @@ namespace SeSecEL
             {
                 strSQL.Append("DELETE [Parameters]");
                 strSQL.Append("WHERE  UserID = " + UserID);
-                sql.ExeccuteCommand(Forma.ToString(),  "Modifica", strSQL);
+                sql.ExeccuteCommand(Forma.ToString(),  strSQL);
                 strSQL.Clear();
                 strSQL.Append("INSERT INTO [Parameters]");
                 strSQL.Append("SELECT ParameterID," + UserID +",Value,Description FROM [Parameters]");
-                sql.ExeccuteCommand(Forma.ToString(), "Modifica", strSQL);
+                sql.ExeccuteCommand(Forma.ToString(), strSQL);
             }
 
         }
@@ -166,7 +166,7 @@ namespace SeSecEL
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("SELECT UserID,FirstName,LastName,email,Inactive,Profile,Password ");
             strSQL.Append(" FROM USERS "); 
-            DataTable tblConsulta = sql.FillDataTable(Forma.ToString(), form.lblUserName.Text, "Buscar", strSQL);
+            DataTable tblConsulta = sql.FillDT(Forma.ToString(), "Buscar", strSQL);
             gvBuscar.DataSource = tblConsulta;
             AddEditColumn(ref gvBuscar);
         }
