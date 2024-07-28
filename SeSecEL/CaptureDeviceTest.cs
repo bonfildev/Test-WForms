@@ -18,7 +18,7 @@ namespace SeSecEL
 {
     public partial class CaptureDeviceTest : Form
     {
-        SqlTools sql = new SqlTools();
+        Tools sql = new Tools();
         DateTime timeRec;
         DateTime timeRecRestart;
         private TimeSpan diff;

@@ -7,16 +7,15 @@ using System.Text;
 
 namespace SeSecEL.library
 {
-    public class SqlTools : Constantes
+    public class Tools : Constantes
     {
-        public string MSGError = string.Empty;
+        public string Error = string.Empty;
         public const int TimeOut = 1200;
-        public string FormatDate() => ("yyyy-MM-dd");
-        public long ExeccuteCommand(string pagina, string funcion, StringBuilder strSQL)
+        public long ExeccuteCommand(string pagina, StringBuilder strSQL)
         {
             SqlConnection cnComando = OpenSQLConnection(pagina);
             long Rows = 0;
-            MSGError = string.Empty;
+            Error = string.Empty;
 
             if (cnComando != null)
             {
@@ -39,7 +38,7 @@ namespace SeSecEL.library
                 catch (Exception ex)
                 {
                     Rows = 0;
-                    MSGError = "SQL_Tools.execCommand:" + ex.Message + " " + strSQL.ToString();
+                    Error = "SQL_Tools.execCommand:" + ex.Message + " " + strSQL.ToString();
                     WriteToFile(ex.Message);
 
                 }
@@ -55,7 +54,7 @@ namespace SeSecEL.library
         public SqlConnection OpenSQLConnection(string Pagina)
         {
             SqlConnection cnSQL = new SqlConnection { ConnectionString = GetConnection() };
-            MSGError = string.Empty;
+            Error = string.Empty;
             try
             {
                 cnSQL.Open();
@@ -63,7 +62,7 @@ namespace SeSecEL.library
             catch (Exception ex)
             {
                 WriteToFile(ex.Message);
-                MSGError = "SQL_Tools.OpenSQLConnection:" + ex.Message;
+                Error = "SQL_Tools.OpenSQLConnection:" + ex.Message;
                 cnSQL = null;
             }
             return cnSQL;
@@ -93,41 +92,45 @@ namespace SeSecEL.library
             }
         }
 
-        public SqlConnection TestConnection(string pagina, string UserName)
+        public SqlConnection TestConnection(string pagina)
         {
             SqlConnection cnSQL = null;
             cnSQL = OpenSQLConnection(pagina);
             return cnSQL;
         }
 
-        public SqlDataReader OpenDataReader(string pagina, string UserName, string funcion, StringBuilder strSQL)
+        public SqlDataReader OpenDataReader(string pagina, string funcion, StringBuilder strSQL)
         {
-            SqlConnection cnSQL = null;
-            SqlCommand cmSQL = null;
-            cnSQL = OpenSQLConnection(pagina);
+            SqlConnection cn = null;
+            SqlCommand cm = null;
+            cn = OpenSQLConnection(pagina);
             SqlDataReader drSQL = null;
-            MSGError = string.Empty;
-
-            if (cnSQL != null)
+            Error = string.Empty;
+            if (cn != null)
             {
                 try
                 {
-                    cmSQL = new SqlCommand { CommandText = strSQL.ToString(), Connection = cnSQL, CommandTimeout = TimeOut };
-                    drSQL = cmSQL.ExecuteReader();
+                    cm = new SqlCommand 
+                    { 
+                        CommandText = strSQL.ToString(), 
+                        Connection = cn, 
+                        CommandTimeout = TimeOut 
+                    };
+                    drSQL = cm.ExecuteReader();
                 }
                 catch (Exception ex)
                 {
-                    MSGError = "SQL_Tools.OpenDataReader:" + ex.Message + " " + strSQL.ToString();
+                    Error = "SQL_Tools.OpenDataReader:" + ex.Message + " " + strSQL.ToString();
                     WriteToFile(ex.Message);
                 }
             }
             return drSQL;
         }
-        public DataTable FillDataTable(string pagina, string UserName, string funcion, StringBuilder strSQL)
+        public DataTable FillDataTable(string pagina, string funcion, StringBuilder strSQL)
         {
             using (DataTable tbl = new DataTable("consulta"))
             {
-                MSGError = string.Empty;
+                Error = string.Empty;
 
                 try
                 {
@@ -149,7 +152,7 @@ namespace SeSecEL.library
                 catch (Exception ex)
                 {
                     WriteToFile(ex.Message);
-                    MSGError = "SQL_Tools.FillDataSet  " + pagina + " " + funcion + ": " + ex.Message + strSQL;
+                    Error = "SQL_Tools.FillDataSet  " + pagina + " " + funcion + ": " + ex.Message + strSQL;
                     return null;
                 }
                 return tbl;
@@ -169,38 +172,42 @@ namespace SeSecEL.library
         {
             SqlConnection cnClave = OpenSQLConnection(forma);
             string strValor = "";
-            MSGError = string.Empty;
+            Error = string.Empty;
 
             if (cnClave != null)
             {
-                SqlDataReader drClave;
+                SqlDataReader dr;
                 try
                 {
-                    SqlCommand cmClave = new SqlCommand { Connection = cnClave, CommandText = strQuery, CommandTimeout = TimeOut };
-                    drClave = cmClave.ExecuteReader();
-                    if (drClave.Read())
+                    SqlCommand cm = new SqlCommand {
+                        Connection = cnClave, 
+                        CommandText = strQuery, 
+                        CommandTimeout = TimeOut 
+                    };
+                    dr = cm.ExecuteReader();
+                    if (dr.Read())
                     {
-                        if (drClave[0].GetType().FullName == "System.DateTime")
+                        if (dr[0].GetType().FullName == "System.DateTime")
                         {
-                            if (drClave[0].ToString().Length != 0)
+                            if (dr[0].ToString().Length != 0)
                             {
-                                strValor = Convert.ToDateTime(drClave[0].ToString()).ToString(FormatDate());
+                                strValor = Convert.ToDateTime(dr[0].ToString()).ToString("yyyy-MM-dd");
                             }
                         }
                         else
                         {
-                            strValor = drClave[0].ToString().Trim();
+                            strValor = dr[0].ToString().Trim();
                         }
                     }
-                    drClave.Close();
-                    cmClave.Dispose();
-                    cmClave = null;
-                    drClave = null;
+                    dr.Close();
+                    cm.Dispose();
+                    cm = null;
+                    dr = null;
                 }
                 catch (Exception ex)
                 {
                     strValor = "";
-                    MSGError = "SQL_Tools.GetClave:" + ex.Message + " " + strQuery;
+                    Error = "SQL_Tools.GetClave:" + ex.Message + " " + strQuery;
                     WriteToFile(ex.Message + " " + strQuery);
                 }
                 cnClave.Close();

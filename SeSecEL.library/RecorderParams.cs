@@ -93,7 +93,7 @@ namespace SeSecEL.library
 
             public void Dispose()
             {
-                SqlTools sql = new SqlTools();
+                Tools sql = new Tools();
                 try
                 {
                     stopThread.Set();

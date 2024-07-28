@@ -22,7 +22,7 @@ namespace SeSecEL
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hwnd, int wmsg, int wparam, int lparam);
         //----------------- 
-        SqlTools sql = new SqlTools();
+        Tools sql = new Tools();
         private bool ValidaConexion()
         { 
             SqlConnection cn = new SqlConnection();

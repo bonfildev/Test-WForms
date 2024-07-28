@@ -26,7 +26,7 @@ namespace SeSecEL
         }
         private void LeeCampos(string id)
         {
-            SqlTools sql = new SqlTools();
+            Tools sql = new Tools();
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("SELECT  UserID,FirstName,LastName,email,Inactive,Profile,Password FROM Users ");
             strSQL.Append(" WHERE UserID = " + id); 
@@ -100,7 +100,7 @@ namespace SeSecEL
 
         private void Alta()
         {
-            SqlTools sql = new SqlTools();
+            Tools sql = new Tools();
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("INSERT Users(FirstName, LastName, email, Inactive, Password, CreateUser, CreateDate) ");
             strSQL.Append("VALUES ( ");
@@ -120,7 +120,7 @@ namespace SeSecEL
         }
         private void Modifica(string ID)
         {
-            SqlTools sql = new SqlTools();
+            Tools sql = new Tools();
             StringBuilder strSQL = new StringBuilder();
             strSQL.AppendLine("UPDATE Users SET  ");
             strSQL.AppendLine("FirstName = '" + txtFirstName.Text + "'");
@@ -139,7 +139,7 @@ namespace SeSecEL
 
         private void AddParameters(string email)
         {
-            SqlTools sql = new SqlTools();
+            Tools sql = new Tools();
             StringBuilder strSQL = new StringBuilder();
             strSQL.AppendLine("Select UserID FROM Users wehre email = '" + email +"'");
             string UserID = sql.GetID(Forma,   strSQL.ToString());
@@ -161,7 +161,7 @@ namespace SeSecEL
         }
         private void Buscar()
         {
-            SqlTools sql = new SqlTools();
+            Tools sql = new Tools();
             Master form = new Master();
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("SELECT UserID,FirstName,LastName,email,Inactive,Profile,Password ");
@@ -207,7 +207,7 @@ namespace SeSecEL
             }
             catch ( Exception ex)
             {
-                new SqlTools().WriteToFile(ex.ToString());
+                new Tools().WriteToFile(ex.ToString());
             }
         }
     }

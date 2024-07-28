@@ -10,7 +10,7 @@ namespace SeSecEL
     public partial class Parameters : Form
     {
         string Forma = "Parameters";
-        SqlTools sql = new SqlTools();
+        Tools sql = new Tools();
         private void Parameters_Resize(object sender, EventArgs e)
         {
             this.Invalidate();
@@ -33,7 +33,7 @@ namespace SeSecEL
 
         private void BuscarParametros()
         {
-            SqlTools sql = new SqlTools();
+            Tools sql = new Tools();
             Master form = new Master();
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append("SELECT ParameterID,UserID,Description,Value");

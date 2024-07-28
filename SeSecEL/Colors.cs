@@ -7,7 +7,7 @@ namespace SeSecEL
 {
     public partial class Colors : Form
     {
-        SqlTools sql = new SqlTools();
+        Tools sql = new Tools();
         public Colors()
         {
             InitializeComponent();
