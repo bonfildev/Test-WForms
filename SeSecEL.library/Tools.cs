@@ -8,14 +8,12 @@ using System.Text;
 namespace SeSecEL.library
 {
     public class Tools : Constantes
-    {
-        public string Error = string.Empty;
+    { 
         public const int TimeOut = 1200;
         public long ExeccuteCommand(string pagina, StringBuilder strSQL)
         {
             SqlConnection cnComando = OpenSQLConnection(pagina);
-            long Rows = 0;
-            Error = string.Empty;
+            long Rows = 0; 
 
             if (cnComando != null)
             {
@@ -37,8 +35,7 @@ namespace SeSecEL.library
                 }
                 catch (Exception ex)
                 {
-                    Rows = 0;
-                    Error = "SQL_Tools.execCommand:" + ex.Message + " " + strSQL.ToString();
+                    Rows = 0; 
                     WriteToFile(ex.Message);
 
                 }
@@ -53,16 +50,16 @@ namespace SeSecEL.library
         private string GetConnection() => ConfigurationManager.AppSettings["StringConection"];
         public SqlConnection OpenSQLConnection(string Pagina)
         {
-            SqlConnection cnSQL = new SqlConnection { ConnectionString = GetConnection() };
-            Error = string.Empty;
+            SqlConnection cnSQL = new SqlConnection { 
+                ConnectionString = GetConnection() 
+            }; 
             try
             {
                 cnSQL.Open();
             }
             catch (Exception ex)
             {
-                WriteToFile(ex.Message);
-                Error = "SQL_Tools.OpenSQLConnection:" + ex.Message;
+                WriteToFile(ex.Message); 
                 cnSQL = null;
             }
             return cnSQL;
@@ -105,7 +102,6 @@ namespace SeSecEL.library
             SqlCommand cm = null;
             cn = OpenSQLConnection(pagina);
             SqlDataReader drSQL = null;
-            Error = string.Empty;
             if (cn != null)
             {
                 try
@@ -119,8 +115,7 @@ namespace SeSecEL.library
                     drSQL = cm.ExecuteReader();
                 }
                 catch (Exception ex)
-                {
-                    Error = "SQL_Tools.OpenDataReader:" + ex.Message + " " + strSQL.ToString();
+                { 
                     WriteToFile(ex.Message);
                 }
             }
@@ -130,8 +125,6 @@ namespace SeSecEL.library
         {
             using (DataTable tbl = new DataTable("consulta"))
             {
-                Error = string.Empty;
-
                 try
                 {
                     SqlConnection cnDataSet = OpenSQLConnection(pagina);
@@ -151,8 +144,7 @@ namespace SeSecEL.library
                 }
                 catch (Exception ex)
                 {
-                    WriteToFile(ex.Message);
-                    Error = "SQL_Tools.FillDataSet  " + pagina + " " + funcion + ": " + ex.Message + strSQL;
+                    WriteToFile(ex.Message); 
                     return null;
                 }
                 return tbl;
@@ -168,12 +160,10 @@ namespace SeSecEL.library
                 return bValor;
             }
         }
-        public string GetID(string forma, string strQuery)
+        public string ID(string forma, string strQuery)
         {
             SqlConnection cnClave = OpenSQLConnection(forma);
             string strValor = "";
-            Error = string.Empty;
-
             if (cnClave != null)
             {
                 SqlDataReader dr;
@@ -207,7 +197,6 @@ namespace SeSecEL.library
                 catch (Exception ex)
                 {
                     strValor = "";
-                    Error = "SQL_Tools.GetClave:" + ex.Message + " " + strQuery;
                     WriteToFile(ex.Message + " " + strQuery);
                 }
                 cnClave.Close();

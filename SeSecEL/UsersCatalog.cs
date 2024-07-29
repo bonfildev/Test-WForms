@@ -142,7 +142,7 @@ namespace SeSecEL
             Tools sql = new Tools();
             StringBuilder strSQL = new StringBuilder();
             strSQL.AppendLine("Select UserID FROM Users wehre email = '" + email +"'");
-            string UserID = sql.GetID(Forma,   strSQL.ToString());
+            string UserID = sql.ID(Forma,   strSQL.ToString());
             if (UserID.Length != 0)
             {
                 strSQL.Append("DELETE [Parameters]");
