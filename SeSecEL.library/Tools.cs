@@ -89,6 +89,12 @@ namespace SeSecEL.library
             }
         }
 
+        /// <summary>
+        /// TEst the connection or, 
+        /// if fail, ten end the progam
+        /// </summary>
+        /// <param name="pagina"></param>
+        /// <returns></returns>
         public SqlConnection TestConnection(string pagina)
         {
             SqlConnection cnSQL = null;
